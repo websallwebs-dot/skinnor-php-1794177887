@@ -1,0 +1,21 @@
+<?php
+return [
+    'paciente' => 'Paciente',
+    'consulta' => 'Consulta',
+    'fecha_respuesta' => 'Data da resposta',
+    'enviada' => 'Enviada',
+    'creado' => 'Criado',
+    'sin_asignar' => 'Não atribuído',
+    'lesiones' => 'Lesões',
+    'respondida' => 'Respondida',
+    'lesion' => 'Lesão',
+    'seguimientos' => 'Acompanhamentos',
+    'parte_del_cuerpo' => 'Parte do corpo',
+    'subido_por' => 'Enviado por',
+    'hora' => 'Hora',
+    'nota' => 'Nota',
+    'fecha' => 'Data',
+    'registro' => 'Data e hora',
+    'registro_sistema' => 'Registrado no sistema',
+    'historial_seguimientos' => 'Histórico de acompanhamentos',
+];

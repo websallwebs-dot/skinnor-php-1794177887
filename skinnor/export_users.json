@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "name": "admin",
+        "email": "admin@skinnor.com",
+        "email_verified_at": null,
+        "password": "$2y$12$taQL\/1laPbIcsQhjAhpmdupisqrGOcFnKVTesnaNn3uPls1HSTMr2",
+        "remember_token": null,
+        "created_at": "2026-05-23 00:45:07",
+        "updated_at": "2026-05-23 00:56:17",
+        "role": "admin",
+        "foto": null,
+        "telefono": null,
+        "locale": "es"
+    },
+    {
+        "id": 2,
+        "name": "Juan Paciente",
+        "email": "paciente@skinnor.com",
+        "email_verified_at": null,
+        "password": "$2y$12$\/kdixcg1e03fgml9Ts1J8uT3Zfuufp2ZZeNuOOTRg2VcJjwAkFVo.",
+        "remember_token": null,
+        "created_at": "2026-05-23 01:14:51",
+        "updated_at": "2026-05-23 01:14:51",
+        "role": "paciente",
+        "foto": null,
+        "telefono": null,
+        "locale": "es"
+    },
+    {
+        "id": 3,
+        "name": "Dr. Garc\u00eda",
+        "email": "profesional@skinnor.com",
+        "email_verified_at": null,
+        "password": "$2y$12$sxvuBHMkD3\/wYm364EZXOekW5e0iyoQZ6gNGONLMgLcdKQhmGqSeS",
+        "remember_token": null,
+        "created_at": "2026-05-23 01:23:36",
+        "updated_at": "2026-05-23 01:23:36",
+        "role": "profesional",
+        "foto": null,
+        "telefono": null,
+        "locale": "es"
+    },
+    {
+        "id": 4,
+        "name": "Diego",
+        "email": "iadiegomunoz@gmail.com",
+        "email_verified_at": null,
+        "password": "$2y$12$NHWZl9X3ZfBbKd5kZeFwMuE5EJTU7ZkOSsrMGZtSzWLo9\/5qKXxlq",
+        "remember_token": null,
+        "created_at": "2026-05-24 04:21:09",
+        "updated_at": "2026-05-24 04:21:09",
+        "role": "paciente",
+        "foto": null,
+        "telefono": "222222222",
+        "locale": "es"
+    }
+]

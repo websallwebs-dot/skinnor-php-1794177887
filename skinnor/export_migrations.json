@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "migration": "0001_01_01_000000_create_users_table",
+        "batch": 1
+    },
+    {
+        "id": 2,
+        "migration": "0001_01_01_000001_create_cache_table",
+        "batch": 1
+    },
+    {
+        "id": 3,
+        "migration": "0001_01_01_000002_create_jobs_table",
+        "batch": 1
+    },
+    {
+        "id": 4,
+        "migration": "2026_05_23_002920_add_role_to_users_table",
+        "batch": 2
+    },
+    {
+        "id": 5,
+        "migration": "2026_05_23_003010_create_profesionales_table",
+        "batch": 2
+    },
+    {
+        "id": 6,
+        "migration": "2026_05_23_003011_create_lesiones_table",
+        "batch": 2
+    },
+    {
+        "id": 7,
+        "migration": "2026_05_23_003011_create_pacientes_table",
+        "batch": 2
+    },
+    {
+        "id": 8,
+        "migration": "2026_05_23_003013_create_seguimientos_table",
+        "batch": 2
+    },
+    {
+        "id": 9,
+        "migration": "2026_05_23_174235_create_imagenes_seguimiento_table",
+        "batch": 3
+    },
+    {
+        "id": 10,
+        "migration": "2026_05_23_201102_create_consultas_table",
+        "batch": 4
+    },
+    {
+        "id": 11,
+        "migration": "2026_05_23_201224_create_consultas_table",
+        "batch": 5
+    },
+    {
+        "id": 12,
+        "migration": "2026_05_23_220000_add_fields_to_pacientes_table",
+        "batch": 6
+    },
+    {
+        "id": 13,
+        "migration": "2026_05_23_220001_add_fields_to_profesionales_table",
+        "batch": 6
+    },
+    {
+        "id": 14,
+        "migration": "2026_05_23_220002_add_photo_to_users_table",
+        "batch": 6
+    },
+    {
+        "id": 15,
+        "migration": "2026_05_24_041306_add_fields_to_pacientes_table",
+        "batch": 6
+    },
+    {
+        "id": 16,
+        "migration": "2026_05_24_041306_add_fields_to_profesionales_table",
+        "batch": 6
+    },
+    {
+        "id": 17,
+        "migration": "2026_05_24_041309_add_photo_to_users_table",
+        "batch": 6
+    },
+    {
+        "id": 18,
+        "migration": "2026_05_24_221351_add_locale_to_users_table",
+        "batch": 7
+    }
+]

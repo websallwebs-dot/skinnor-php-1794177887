@@ -1,0 +1,13 @@
+[
+    {
+        "id": 1,
+        "paciente_id": 1,
+        "profesional_id": 1,
+        "mensaje": "hola doc, como va todo?\n",
+        "respuesta": "hola, va muy bien, tu caso est\u00e1 en excelentes manos",
+        "leida": 1,
+        "respondida_at": "2026-05-23 20:35:35",
+        "created_at": "2026-05-23 20:34:48",
+        "updated_at": "2026-05-23 20:35:35"
+    }
+]

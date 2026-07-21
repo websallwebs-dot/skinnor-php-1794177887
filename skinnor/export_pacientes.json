@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "user_id": 2,
+        "profesional_id": 1,
+        "fecha_nacimiento": null,
+        "genero": null,
+        "historial_medico": null,
+        "created_at": "2026-05-23 01:14:51",
+        "updated_at": "2026-05-23 01:25:43",
+        "rut": null,
+        "telefono": null,
+        "alergias": null,
+        "medicamentos": null
+    },
+    {
+        "id": 2,
+        "user_id": 4,
+        "profesional_id": null,
+        "fecha_nacimiento": "2010-01-24",
+        "genero": "masculino",
+        "historial_medico": null,
+        "created_at": "2026-05-24 04:21:09",
+        "updated_at": "2026-05-24 04:21:09",
+        "rut": "22.222.222-2",
+        "telefono": "222222222",
+        "alergias": null,
+        "medicamentos": null
+    }
+]

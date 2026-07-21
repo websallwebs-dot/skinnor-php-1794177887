@@ -1,0 +1,13 @@
+[
+    {
+        "id": 1,
+        "user_id": 3,
+        "especialidad": "Dermatolog\u00eda",
+        "numero_licencia": "DRM-001",
+        "created_at": "2026-05-23 01:25:43",
+        "updated_at": "2026-05-23 01:25:43",
+        "rut": null,
+        "universidad": null,
+        "anos_experiencia": null
+    }
+]
