@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skinnor — Sistema Dermatológico</title>
+    <title>Skinnor — Teledermatología con IA</title>
+    <meta name="description" content="Sube una foto de tu lesión de piel. Skinnor mide su evolución con visión artificial y te conecta con un médico desde casa.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
@@ -38,10 +36,14 @@
             }
         }
     </script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans antialiased text-gray-950 h-full">
+<body class="bg-white font-sans antialiased text-gray-950 h-full">
     <div class="flex flex-col min-h-screen">
-        <!-- Header / Navbar -->
+
+        <!-- Header -->
         <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16 items-center">
@@ -59,13 +61,8 @@
                                     {{ substr(Auth::user()->name, 0, 1) }}
                                 </div>
                                 <span class="text-sm font-medium text-gray-700 hidden sm:block">{{ Auth::user()->name }}</span>
-                                @if(Auth::user()->role === 'superadmin')
-                                    <span class="inline-flex items-center rounded-md bg-amber-50 px-2 py-1 text-xs font-bold text-amber-700 ring-1 ring-inset ring-amber-600/20">
-                                        SUPERADMIN
-                                    </span>
-                                @endif
                             </div>
-                            
+
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
                                 <button type="submit" class="inline-flex items-center gap-x-2 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
@@ -74,9 +71,13 @@
                                 </button>
                             </form>
                         @else
-                            <a href="/superadmin/login" class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600">
+                            <a href="/login" class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600">
                                 <i class="fas fa-sign-in-alt"></i>
-                                <span>Iniciar Sesión</span>
+                                <span>Iniciar sesión</span>
+                            </a>
+                            <a href="/register" class="inline-flex items-center gap-x-2 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Crear cuenta</span>
                             </a>
                         @endif
                     </div>
@@ -85,185 +86,109 @@
         </header>
 
         <main class="flex-grow">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <!-- Notifications -->
-                @if(session('success'))
-                    <div class="rounded-xl border border-green-200 bg-green-50 p-4 mb-8">
-                        <div class="flex items-center gap-x-3">
-                            <i class="fas fa-check-circle text-green-500 text-lg"></i>
-                            <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
-                        </div>
-                    </div>
-                @endif
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-                @if(session('error'))
-                    <div class="rounded-xl border border-red-200 bg-red-50 p-4 mb-8">
-                        <div class="flex items-center gap-x-3">
-                            <i class="fas fa-exclamation-circle text-red-500 text-lg"></i>
-                            <p class="text-sm font-medium text-red-800">{{ session('error') }}</p>
-                        </div>
-                    </div>
-                @endif
-
-                <!-- Hero Section -->
-                <div class="text-center mb-12">
-                    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                        Plataforma <span class="text-primary-600">Dermatológica</span>
+                <!-- Hero -->
+                <section class="text-center mb-16">
+                    <span class="inline-flex items-center gap-x-2 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-semibold tracking-wide mb-4">
+                        <i class="fas fa-shield-check"></i>
+                        Telemedicina dermatológica
+                    </span>
+                    <h1 class="text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl mb-6">
+                        Tu piel, <span class="text-primary-600">cuidada desde casa.</span>
                     </h1>
-                    <p class="mt-4 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
-                        Gestión integral de clínicas, profesionales y pacientes con tecnología de vanguardia.
+                    <p class="text-lg leading-8 text-gray-600 max-w-2xl mx-auto mb-8">
+                        Skinnor transforma la foto de una lesión de piel en un registro clínico objetivo.
+                        Algoritmos matemáticos y visión artificial miden su evolución en el tiempo y te conectan
+                        con un médico — sin salir de casa.
                     </p>
-                </div>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <a href="/login" class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition duration-150">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Iniciar sesión</span>
+                        </a>
+                        <a href="/register" class="inline-flex items-center gap-x-2 rounded-lg border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition duration-150">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Crear cuenta</span>
+                        </a>
+                    </div>
+                </section>
 
-                <!-- Bento Grid / Feature Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                    <!-- Superadmin Card -->
-                    <section class="flex flex-col rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5">
-                        <div class="p-6">
-                            <div class="flex items-center gap-x-3 mb-4">
-                                <div class="bg-amber-100 p-2.5 rounded-lg">
-                                    <i class="fas fa-crown text-amber-600 text-xl"></i>
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900">Control Central</h3>
+                <!-- Cómo funciona -->
+                <section class="mb-16">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl font-bold tracking-tight text-gray-900 mb-4">Cómo funciona</h2>
+                        <p class="text-gray-600">Tres pasos simples para comenzar tu seguimiento.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="text-center p-6 rounded-xl bg-gray-50 border border-gray-100">
+                            <div class="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center mx-auto mb-4 text-primary-600 text-2xl">
+                                <i class="fas fa-image"></i>
                             </div>
-                            <p class="text-sm text-gray-600 mb-6">
-                                Administración global de inquilinos, configuración de dominios y gestión de seguridad del sistema.
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Sube una foto</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                Fotografía tu lesión desde casa con cualquier dispositivo. En segundos queda registrada.
                             </p>
-                            <div class="mt-auto space-y-3">
-                                @if(Auth::check() && Auth::user()->role === 'superadmin')
-                                    <a href="/superadmin" class="flex items-center justify-center gap-x-2 w-full rounded-lg bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 transition">
-                                        <i class="fas fa-cog"></i> Panel Superadmin
-                                    </a>
-                                    <a href="{{ route('domains.index') }}" class="flex items-center justify-center gap-x-2 w-full rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition">
-                                        <i class="fas fa-globe"></i> Gestionar Dominios
-                                    </a>
-                                @else
-                                    <a href="/superadmin/login" class="flex items-center justify-center gap-x-2 w-full rounded-lg bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 transition">
-                                        <i class="fas fa-sign-in-alt"></i> Acceder
-                                    </a>
-                                @endif
-                            </div>
                         </div>
-                    </section>
-
-                    <!-- Clinics Card -->
-                    <section class="flex flex-col rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5">
-                        <div class="p-6 flex-grow">
-                            <div class="flex items-center gap-x-3 mb-4">
-                                <div class="bg-primary-100 p-2.5 rounded-lg">
-                                    <i class="fas fa-hospital-user text-primary-600 text-xl"></i>
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900">Mis Clínicas</h3>
+                        <div class="text-center p-6 rounded-xl bg-gray-50 border border-gray-100">
+                            <div class="w-12 h-12 rounded-lg bg-teal-100 flex items-center justify-center mx-auto mb-4 text-teal-600 text-2xl">
+                                <i class="fas fa-chart-line"></i>
                             </div>
-                            
-                            @if(Auth::check())
-                                <div class="space-y-2 mt-4 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
-                                    @forelse($clinicas as $clinica)
-                                        @php $dominio = $clinica->domains()->first(); @endphp
-                                        @if($dominio)
-                                            <a href="http://{{ $dominio->domain }}/admin" target="_blank" class="group flex items-center justify-between rounded-lg bg-gray-50 px-4 py-3 text-sm font-medium text-gray-900 hover:bg-primary-50 hover:text-primary-700 transition border border-gray-100">
-                                                <span class="truncate">{{ $clinica->nombre }}</span>
-                                                <i class="fas fa-chevron-right text-gray-300 group-hover:text-primary-400 transition text-xs"></i>
-                                            </a>
-                                        @endif
-                                    @empty
-                                        <div class="text-center py-6">
-                                            <p class="text-sm text-gray-500">No tienes clínicas asignadas.</p>
-                                        </div>
-                                    @endforelse
-                                </div>
-                            @else
-                                <div class="text-center py-10">
-                                    <p class="text-sm text-gray-500 mb-4">Inicia sesión para ver tus clínicas asignadas.</p>
-                                    <a href="/superadmin/login" class="text-sm font-semibold text-primary-600 hover:text-primary-500 underline decoration-2 underline-offset-4">Identificarse →</a>
-                                </div>
-                            @endif
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Medimos su evolución</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                Algoritmos y visión artificial comparan cada foto con las anteriores y detectan cambios.
+                            </p>
                         </div>
-                    </section>
-
-                    <!-- Fast Access Card -->
-                    <section class="flex flex-col rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5">
-                        <div class="p-6">
-                            <div class="flex items-center gap-x-3 mb-4">
-                                <div class="bg-teal-100 p-2.5 rounded-lg">
-                                    <i class="fas fa-bolt text-teal-600 text-xl"></i>
-                                </div>
-                                <h3 class="text-lg font-semibold text-gray-900">Acceso Rápido</h3>
+                        <div class="text-center p-6 rounded-xl bg-gray-50 border border-gray-100">
+                            <div class="w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center mx-auto mb-4 text-indigo-600 text-2xl">
+                                <i class="fas fa-user-md"></i>
                             </div>
-                            <p class="text-sm text-gray-600 mb-4">Enlaces directos por subdominio:</p>
-                            <div class="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
-                                @forelse($dominios as $dominio)
-                                    <a href="http://{{ $dominio->domain }}/admin" target="_blank" class="flex items-center gap-x-2 rounded-lg px-3 py-2 text-xs font-mono text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition border border-dashed border-gray-200">
-                                        <i class="fas fa-link text-gray-400"></i>
-                                        <span class="truncate">{{ $dominio->domain }}</span>
-                                    </a>
-                                @empty
-                                    <p class="text-xs text-gray-500 italic py-4">No hay dominios registrados.</p>
-                                @endforelse
-                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Tu médico la revisa</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                Un especialista revisa tu registro, responde tus dudas y define los próximos pasos.
+                            </p>
                         </div>
-                    </section>
-                </div>
-
-                <!-- Clinics Data Table -->
-                <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 overflow-hidden">
-                    <div class="border-b border-gray-200 bg-gray-50/50 px-6 py-4">
-                        <h3 class="text-base font-semibold leading-6 text-gray-900">Directorio de Clínicas</h3>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead>
-                                <tr class="bg-gray-50">
-                                    <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Clínica</th>
-                                    <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Dominio Principal</th>
-                                    <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Estado</th>
-                                    <th class="relative px-6 py-3 text-right">
-                                        <span class="sr-only">Acciones</span>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @forelse($clinicas ?: \App\Models\Clinica::where('activa', true)->get() as $clinica)
-                                    @php $dominios_clinica = $clinica->domains; @endphp
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <div class="text-sm font-semibold text-gray-900">{{ $clinica->nombre }}</div>
-                                            <div class="text-xs text-gray-500">ID: {{ $clinica->id }}</div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            @if($dominios_clinica->isNotEmpty())
-                                                <code class="text-xs font-mono bg-gray-100 text-gray-700 px-2 py-1 rounded">
-                                                    {{ $dominios_clinica->first()->domain }}
-                                                </code>
-                                            @else
-                                                <span class="text-xs text-red-500 italic">Pendiente</span>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                                Activa
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 text-right">
-                                            @if($dominios_clinica->isNotEmpty())
-                                                <a href="http://{{ $dominios_clinica->first()->domain }}/admin" target="_blank" class="inline-flex items-center rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition">
-                                                    Entrar <i class="fas fa-external-link-alt ml-1.5 opacity-50"></i>
-                                                </a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="px-6 py-12 text-center">
-                                            <i class="fas fa-inbox text-4xl text-gray-200 mb-3"></i>
-                                            <p class="text-sm text-gray-500 font-medium">No se encontraron clínicas activas.</p>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                </section>
+
+                <!-- Quién puede usar -->
+                <section class="mb-16">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl font-bold tracking-tight text-gray-900 mb-4">Hecha para quienes cuidan y quienes se cuidan</h2>
+                        <p class="text-gray-600">Una plataforma, dos formas de acceder.</p>
                     </div>
-                </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <article class="p-6 rounded-xl border border-gray-200 bg-white hover:shadow-md transition">
+                            <div class="flex items-center gap-x-3 mb-4">
+                                <div class="bg-blue-100 p-2 rounded-lg text-blue-600">
+                                    <i class="fas fa-user text-xl"></i>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900">Para pacientes</h3>
+                            </div>
+                            <p class="text-sm text-gray-600 leading-relaxed mb-4">
+                                Crea tu seguimiento, sube fotos de tus lesiones y comunica con tu médico asignado desde casa.
+                            </p>
+                            <a href="/login" class="text-sm font-semibold text-primary-600 hover:text-primary-500 flex items-center gap-x-1">
+                                Iniciar sesión <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </article>
+                        <article class="p-6 rounded-xl border border-gray-200 bg-white hover:shadow-md transition">
+                            <div class="flex items-center gap-x-3 mb-4">
+                                <div class="bg-teal-100 p-2 rounded-lg text-teal-600">
+                                    <i class="fas fa-user-md text-xl"></i>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900">Para profesionales</h3>
+                            </div>
+                            <p class="text-sm text-gray-600 leading-relaxed mb-4">
+                                Accede a tu panel profesional para revisar pacientes, lesiones y consultas asignadas.
+                            </p>
+                            <a href="/login" class="text-sm font-semibold text-primary-600 hover:text-primary-500 flex items-center gap-x-1">
+                                Iniciar sesión <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </article>
+                    </div>
+                </section>
+
             </div>
         </main>
 
@@ -274,11 +199,11 @@
                     <i class="fas fa-hospital"></i>
                     <span class="font-bold text-gray-900">Skinnor</span>
                 </div>
-                <p class="text-sm text-gray-500">© 2026 Sistema de Gestión Dermatológica Avanzada.</p>
+                <p class="text-sm text-gray-500">© 2026 Skinnor. Todos los derechos reservados.</p>
                 <div class="mt-4 flex justify-center gap-x-6">
                     <span class="text-xs text-gray-400">Laravel v13.11</span>
-                    <span class="text-xs text-gray-400">Filament v3.x</span>
-                    <span class="text-xs text-gray-400">Tailwind CSS v3.x</span>
+                    <span class="text-xs text-gray-400">Filament v5</span>
+                    <span class="text-xs text-gray-400">Tailwind CSS</span>
                 </div>
             </div>
         </footer>
@@ -301,4 +226,3 @@
     </style>
 </body>
 </html>
-

@@ -20,7 +20,7 @@ $response = Http::timeout(30)->withHeaders([
 ]);
 
 if ($response->failed()) {
-    echo "Error: " . $response->status() . " - " . $response->body() . "\n";
+    echo 'Error: '.$response->status().' - '.$response->body()."\n";
     exit(1);
 }
 
@@ -35,7 +35,7 @@ $datasets = [];
 
 foreach ($matches as $match) {
     $metadata = $match['metadata'] ?? [];
-    
+
     if (isset($metadata['age'])) {
         $ages[] = $metadata['age'];
     }
@@ -48,15 +48,15 @@ foreach ($matches as $match) {
     if (isset($metadata['dataset'])) {
         $datasets[$metadata['dataset']] = true;
     }
-    
-    echo "ID: " . $match['id'] . "\n";
-    echo "Metadata: " . json_encode($metadata, JSON_PRETTY_PRINT) . "\n";
+
+    echo 'ID: '.$match['id']."\n";
+    echo 'Metadata: '.json_encode($metadata, JSON_PRETTY_PRINT)."\n";
     echo "---\n";
 }
 
 echo "\n=== Resumen ===\n";
-echo "Edades encontradas: " . implode(', ', array_unique($ages)) . "\n";
-echo "Rango de edad: " . (min($ages) ?? 'N/A') . " - " . (max($ages) ?? 'N/A') . "\n";
-echo "Tipos de diagnóstico: " . implode(', ', array_keys($dxTypes)) . "\n";
-echo "Localizaciones: " . implode(', ', array_keys($localizations)) . "\n";
-echo "Datasets: " . implode(', ', array_keys($datasets)) . "\n";
+echo 'Edades encontradas: '.implode(', ', array_unique($ages))."\n";
+echo 'Rango de edad: '.(min($ages) ?? 'N/A').' - '.(max($ages) ?? 'N/A')."\n";
+echo 'Tipos de diagnóstico: '.implode(', ', array_keys($dxTypes))."\n";
+echo 'Localizaciones: '.implode(', ', array_keys($localizations))."\n";
+echo 'Datasets: '.implode(', ', array_keys($datasets))."\n";

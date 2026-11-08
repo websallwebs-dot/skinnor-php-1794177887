@@ -129,8 +129,8 @@ return [
     */
 
     'temporary_file_upload' => [
-        'disk'      => env('FILESYSTEM_DISK', 'local'),
-        'rules'     => ['file', 'max:10240'],
+        'disk' => env('FILESYSTEM_DISK', 'local'),
+        'rules' => ['file', 'max:10240'],
         'directory' => '',
         'middleware' => null,
         'preview_mimes' => [

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Paciente\Resources\Lesions\Pages;
 
 use App\Filament\Paciente\Resources\Lesions\LesionResource;

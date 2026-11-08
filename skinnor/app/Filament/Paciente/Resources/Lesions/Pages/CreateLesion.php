@@ -3,6 +3,7 @@
 namespace App\Filament\Paciente\Resources\Lesions\Pages;
 
 use App\Filament\Paciente\Resources\Lesions\LesionResource;
+use App\Models\Paciente;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +13,9 @@ class CreateLesion extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['paciente_id'] = Auth::user()->paciente->id;
+        $paciente = Paciente::where('user_id', Auth::id())->first();
+        $data['paciente_id'] = $paciente?->id;
+
         return $data;
     }
 

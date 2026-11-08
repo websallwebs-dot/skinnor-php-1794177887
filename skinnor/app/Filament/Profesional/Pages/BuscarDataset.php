@@ -3,21 +3,21 @@
 namespace App\Filament\Profesional\Pages;
 
 use App\Services\Similares\DatasetSearchService;
-use Filament\Pages\Page;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
-use Filament\Schemas\Schema;
 use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 
 class BuscarDataset extends Page implements HasForms
 {
     use InteractsWithForms;
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-magnifying-glass';
+
     protected string $view = 'filament.profesional.pages.buscar-dataset';
 
     public static function getNavigationLabel(): string
@@ -27,16 +27,24 @@ class BuscarDataset extends Page implements HasForms
 
     // Form data
     public ?string $diagnostico = null;
+
     public ?string $tipoLesion = null;
+
     public ?string $edadMin = null;
+
     public ?string $edadMax = null;
+
     public ?string $localizacion = null;
+
     public ?string $dataset = 'HAM10000';
+
     public int $limit = 20;
 
     // Results
     public array $resultados = [];
+
     public bool $isSearching = false;
+
     public string $errorMessage = '';
 
     public function form(Schema $form): Schema
@@ -116,8 +124,8 @@ class BuscarDataset extends Page implements HasForms
         $this->resultados = [];
 
         try {
-            $service = new DatasetSearchService();
-            
+            $service = new DatasetSearchService;
+
             $filtros = [];
             if ($this->diagnostico) {
                 $filtros['dx'] = $this->diagnostico;
@@ -125,7 +133,7 @@ class BuscarDataset extends Page implements HasForms
             if ($this->tipoLesion) {
                 $filtros['dx_type'] = $this->tipoLesion;
             }
-            
+
             \Log::info('Payload enviado a DatasetSearchService:', ['filtros' => $filtros]);
 
             if ($this->edadMin) {
@@ -154,24 +162,25 @@ class BuscarDataset extends Page implements HasForms
                     ->body('Por favor, selecciona al menos un filtro para buscar.')
                     ->warning()
                     ->send();
+
                 return;
             }
 
             $resultados = $service->buscarPorFiltros($filtros, $this->limit);
-            
+
             $this->resultados = $resultados;
             $this->isSearching = false;
 
             Notification::make()
                 ->title('Búsqueda completada')
-                ->body(count($resultados) . ' casos encontrados')
+                ->body(count($resultados).' casos encontrados')
                 ->success()
                 ->send();
 
         } catch (\Exception $e) {
             $this->isSearching = false;
             $this->errorMessage = $e->getMessage();
-            
+
             Notification::make()
                 ->title('Error en búsqueda')
                 ->body($this->errorMessage)

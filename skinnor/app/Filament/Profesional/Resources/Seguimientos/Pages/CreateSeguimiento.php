@@ -12,8 +12,8 @@ class CreateSeguimiento extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['subido_por']      = 'profesional';
-        $data['profesional_id']  = Auth::user()->profesional?->id;
+        $data['subido_por'] = 'profesional';
+        $data['profesional_id'] = Auth::user()->profesional?->id;
 
         return $data;
     }

@@ -2,13 +2,14 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Clinica;
 use App\Models\User;
+use Illuminate\Console\Command;
 
 class SaaSFinalize extends Command
 {
     protected $signature = 'saas:finalize';
+
     protected $description = 'Finaliza la migración a arquitectura SaaS';
 
     public function handle()

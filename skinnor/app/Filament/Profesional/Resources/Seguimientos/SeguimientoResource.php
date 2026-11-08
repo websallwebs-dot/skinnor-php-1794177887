@@ -2,7 +2,6 @@
 
 namespace App\Filament\Profesional\Resources\Seguimientos;
 
-use App\Filament\Profesional\Resources\Seguimientos\Pages;
 use App\Models\Lesion;
 use App\Models\Paciente;
 use App\Models\Seguimiento;
@@ -23,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 class SeguimientoResource extends Resource
 {
     protected static ?string $model = Seguimiento::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ClipboardDocument;
 
     public static function getNavigationLabel(): string
@@ -46,6 +46,7 @@ class SeguimientoResource extends Resource
         $profesional = Auth::user()->profesional;
         $pacienteIds = Paciente::where('profesional_id', $profesional?->id)->pluck('id');
         $lesionIds = Lesion::whereIn('paciente_id', $pacienteIds)->pluck('id');
+
         return parent::getEloquentQuery()->whereIn('lesion_id', $lesionIds)->orderBy('fecha', 'desc');
     }
 
@@ -58,11 +59,12 @@ class SeguimientoResource extends Resource
                 ->options(function () {
                     $profesional = Auth::user()->profesional;
                     $pacienteIds = Paciente::where('profesional_id', $profesional?->id)->pluck('id');
+
                     return Lesion::whereIn('paciente_id', $pacienteIds)
                         ->with('paciente.user')
                         ->get()
-                        ->mapWithKeys(fn($l) => [
-                            $l->id => $l->paciente->user->name . ' — ' . $l->nombre
+                        ->mapWithKeys(fn ($l) => [
+                            $l->id => $l->paciente->user->name.' — '.$l->nombre,
                         ]);
                 })
                 ->searchable()
@@ -143,10 +145,10 @@ class SeguimientoResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListSeguimientos::route('/'),
+            'index' => Pages\ListSeguimientos::route('/'),
             'create' => Pages\CreateSeguimiento::route('/create'),
-            'view'   => Pages\ViewSeguimiento::route('/{record}'),
-            'edit'   => Pages\EditSeguimiento::route('/{record}/edit'),
+            'view' => Pages\ViewSeguimiento::route('/{record}'),
+            'edit' => Pages\EditSeguimiento::route('/{record}/edit'),
         ];
     }
 }

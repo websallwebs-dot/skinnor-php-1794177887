@@ -1,8 +1,10 @@
 <?php
+
 require 'vendor/autoload.php';
 $app = require_once 'bootstrap/app.php';
-$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+$app->make(Kernel::class)->bootstrap();
 
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Http;
 
 $apiKey = config('services.pinecone.api_key');
@@ -13,22 +15,22 @@ echo "Querying Pinecone for NV with age 30 (as string) to see if it works...\n";
 
 $response = Http::withHeaders([
     'Api-Key' => $apiKey,
-    'Content-Type' => 'application/json'
+    'Content-Type' => 'application/json',
 ])->post("https://{$index}/query", [
     'vector' => $dummyVector,
     'topK' => 5,
     'includeMetadata' => true,
     'filter' => [
         'dx' => ['$eq' => 'nv'],
-        'age' => ['$eq' => "30.0"]
-    ]
+        'age' => ['$eq' => '30.0'],
+    ],
 ]);
 
 if ($response->successful()) {
     echo "Success!\n";
     $data = $response->json();
-    echo "Matches found: " . count($data['matches']) . "\n";
+    echo 'Matches found: '.count($data['matches'])."\n";
 } else {
-    echo "Error: " . $response->status() . "\n";
-    echo $response->body() . "\n";
+    echo 'Error: '.$response->status()."\n";
+    echo $response->body()."\n";
 }

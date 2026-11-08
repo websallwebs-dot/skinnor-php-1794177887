@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Livewire;
 
 use App\Models\Seguimiento;
@@ -11,6 +12,7 @@ class SeguimientoFotosGallery extends Component
     use WithFileUploads;
 
     public int $seguimientoId;
+
     public $nuevaFoto = null;
 
     public function mount(int $seguimientoId): void

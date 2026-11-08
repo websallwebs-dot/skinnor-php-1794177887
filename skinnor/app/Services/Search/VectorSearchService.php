@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 class VectorSearchService
 {
     protected string $apiKey;
+
     protected string $indexUrl;
 
     public function __construct()
@@ -27,7 +28,7 @@ class VectorSearchService
         ]);
 
         if ($response->failed()) {
-            throw new \Exception('Error al buscar en Pinecone: ' . $response->body());
+            throw new \Exception('Error al buscar en Pinecone: '.$response->body());
         }
 
         return $response->json()['matches'];

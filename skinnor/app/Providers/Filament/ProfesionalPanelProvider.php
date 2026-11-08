@@ -2,8 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Profesional\Pages\BuscarDataset;
+use App\Filament\Profesional\Pages\Laboratorio;
 use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages\Dashboard;
@@ -18,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
 class ProfesionalPanelProvider extends PanelProvider
 {
@@ -34,8 +36,8 @@ class ProfesionalPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Profesional/Pages'), for: 'App\Filament\Profesional\Pages')
             ->pages([
                 Dashboard::class,
-                \App\Filament\Profesional\Pages\Laboratorio::class,
-                \App\Filament\Profesional\Pages\BuscarDataset::class,
+                Laboratorio::class,
+                BuscarDataset::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Profesional/Widgets'), for: 'App\Filament\Profesional\Widgets')
             ->widgets([
@@ -43,12 +45,10 @@ class ProfesionalPanelProvider extends PanelProvider
                 FilamentInfoWidget::class,
             ])
             ->middleware([
-                \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,
-                \Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains::class,
+                InitializeTenancyByDomain::class,
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
-                AuthenticateSession::class,
                 ShareErrorsFromSession::class,
                 PreventRequestForgery::class,
                 SubstituteBindings::class,

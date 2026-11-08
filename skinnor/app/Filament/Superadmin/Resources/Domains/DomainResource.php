@@ -7,13 +7,13 @@ use App\Filament\Superadmin\Resources\Domains\Pages\EditDomain;
 use App\Filament\Superadmin\Resources\Domains\Pages\ListDomains;
 use App\Filament\Superadmin\Resources\Domains\Schemas\DomainForm;
 use App\Filament\Superadmin\Resources\Domains\Tables\DomainsTable;
-use Stancl\Tenancy\Database\Models\Domain;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Stancl\Tenancy\Database\Models\Domain;
+use UnitEnum;
 
 class DomainResource extends Resource
 {

@@ -2,10 +2,13 @@
 
 namespace App\Filament\Profesional\Resources\Pacientes;
 
-use App\Filament\Profesional\Resources\Pacientes\Pages;
+use App\Filament\Profesional\Resources\Pacientes\RelationManagers\ConsultasRelationManager;
+use App\Filament\Profesional\Resources\Pacientes\RelationManagers\LesionesRelationManager;
 use App\Models\Paciente;
 use App\Models\User;
 use BackedEnum;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -18,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 class PacienteResource extends Resource
 {
     protected static ?string $model = Paciente::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
 
     public static function getNavigationLabel(): string
@@ -39,6 +43,7 @@ class PacienteResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $profesional = Auth::user()->profesional;
+
         return parent::getEloquentQuery()->where('profesional_id', $profesional?->id);
     }
 
@@ -58,8 +63,8 @@ class PacienteResource extends Resource
                 ->label(__('fields.genero'))
                 ->options([
                     'masculino' => 'Masculino',
-                    'femenino'  => 'Femenino',
-                    'otro'      => 'Otro',
+                    'femenino' => 'Femenino',
+                    'otro' => 'Otro',
                 ]),
 
             Forms\Components\Textarea::make('historial_medico')
@@ -94,25 +99,26 @@ class PacienteResource extends Resource
                     ->counts('lesiones'),
             ])
             ->actions([
-                \Filament\Actions\ViewAction::make()->label(__('actions.ver')),
-                \Filament\Actions\EditAction::make()->label(__('actions.editar')),
+                ViewAction::make()->label(__('actions.ver')),
+                EditAction::make()->label(__('actions.editar')),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            \App\Filament\Profesional\Resources\Pacientes\RelationManagers\LesionesRelationManager::class,
-            \App\Filament\Profesional\Resources\Pacientes\RelationManagers\ConsultasRelationManager::class,
+            LesionesRelationManager::class,
+            ConsultasRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListPacientes::route('/'),
-            'view'   => Pages\ViewPaciente::route('/{record}'),
-            'edit'   => Pages\EditPaciente::route('/{record}/edit'),
+            'index' => Pages\ListPacientes::route('/'),
+            'create' => Pages\CreatePaciente::route('/create'),
+            'view' => Pages\ViewPaciente::route('/{record}'),
+            'edit' => Pages\EditPaciente::route('/{record}/edit'),
         ];
     }
 }

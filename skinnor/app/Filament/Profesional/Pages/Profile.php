@@ -2,17 +2,14 @@
 
 namespace App\Filament\Profesional\Pages;
 
-use App\Models\Profesional;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class Profile extends Page implements HasForms
@@ -20,7 +17,9 @@ class Profile extends Page implements HasForms
     use InteractsWithForms;
 
     protected static ?string $navigationLabel = 'Mi Perfil';
+
     protected static ?string $title = 'Mi Perfil';
+
     protected string $view = 'filament.profesional.pages.profile';
 
     public ?array $data = [];
@@ -31,13 +30,13 @@ class Profile extends Page implements HasForms
         $profesional = $user->profesional;
 
         $this->form->fill([
-            'name'             => $user->name,
-            'email'            => $user->email,
-            'foto'             => $user->foto,
-            'especialidad'     => $profesional?->especialidad,
-            'numero_licencia'  => $profesional?->numero_licencia,
-            'rut'              => $profesional?->rut,
-            'universidad'      => $profesional?->universidad,
+            'name' => $user->name,
+            'email' => $user->email,
+            'foto' => $user->foto,
+            'especialidad' => $profesional?->especialidad,
+            'numero_licencia' => $profesional?->numero_licencia,
+            'rut' => $profesional?->rut,
+            'universidad' => $profesional?->universidad,
             'anos_experiencia' => $profesional?->anos_experiencia,
         ]);
     }
@@ -96,16 +95,16 @@ class Profile extends Page implements HasForms
         $user = Auth::user();
 
         $user->update([
-            'name'  => $data['name'],
+            'name' => $data['name'],
             'email' => $data['email'],
-            'foto'  => $data['foto'],
+            'foto' => $data['foto'],
         ]);
 
         $user->profesional->update([
-            'especialidad'     => $data['especialidad'],
-            'numero_licencia'  => $data['numero_licencia'],
-            'rut'              => $data['rut'],
-            'universidad'      => $data['universidad'],
+            'especialidad' => $data['especialidad'],
+            'numero_licencia' => $data['numero_licencia'],
+            'rut' => $data['rut'],
+            'universidad' => $data['universidad'],
             'anos_experiencia' => $data['anos_experiencia'],
         ]);
 

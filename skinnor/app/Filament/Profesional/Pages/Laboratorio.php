@@ -4,10 +4,10 @@ namespace App\Filament\Profesional\Pages;
 
 use App\Models\Paciente;
 use App\Models\Seguimiento;
-use Filament\Pages\Page;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Components\Select;
+use Filament\Pages\Page;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +16,7 @@ class Laboratorio extends Page implements HasForms
     use InteractsWithForms;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-beaker';
+
     protected string $view = 'filament.profesional.pages.laboratorio';
 
     public static function getNavigationLabel(): string
@@ -24,8 +25,11 @@ class Laboratorio extends Page implements HasForms
     }
 
     public ?string $tabActiva = null;
+
     public ?int $selectedMediaId = null;
+
     public ?int $pacienteSeleccionado = null;
+
     public array $datosSeguimientos = [];
 
     public function activarHerramienta(string $tab): void
@@ -57,13 +61,14 @@ class Laboratorio extends Page implements HasForms
 
     protected function cargarSeguimientos(): void
     {
-        if (!$this->pacienteSeleccionado) {
+        if (! $this->pacienteSeleccionado) {
             $this->datosSeguimientos = [];
+
             return;
         }
 
         $seguimientos = Seguimiento::with(['media', 'lesion'])
-            ->whereHas('lesion', fn($q) => $q->where('paciente_id', $this->pacienteSeleccionado))
+            ->whereHas('lesion', fn ($q) => $q->where('paciente_id', $this->pacienteSeleccionado))
             ->orderByDesc('fecha')
             ->get();
 
@@ -74,10 +79,10 @@ class Laboratorio extends Page implements HasForms
                 $url = $foto->getUrl();
 
                 $fotosPlanas[] = [
-                    'id'    => $seg->id,
+                    'id' => $seg->id,
                     'fecha' => optional($seg->fecha)->format('d/m/Y') ?? '—',
-                    'lesion'=> $seg->lesion?->nombre ?? '—',
-                    'url'   => $url,
+                    'lesion' => $seg->lesion?->nombre ?? '—',
+                    'url' => $url,
                 ];
             }
         }
@@ -88,7 +93,9 @@ class Laboratorio extends Page implements HasForms
     protected function getPacientesOptions(): array
     {
         $user = Auth::user();
-        if (!$user || !$user->profesional) return [];
+        if (! $user || ! $user->profesional) {
+            return [];
+        }
 
         return Paciente::where('profesional_id', $user->profesional->id)
             ->with('user')

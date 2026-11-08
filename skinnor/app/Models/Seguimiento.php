@@ -1,16 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\Image\Enums\Fit;
 
 class Seguimiento extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use HasFactory, InteractsWithMedia;
+
     protected $table = 'seguimientos';
 
     protected $fillable = [
@@ -22,45 +27,21 @@ class Seguimiento extends Model implements HasMedia
         'profesional_id',
     ];
 
-    // Permite que Filament maneje estos campos sin error
-    public function getFillable(): array
-    {
-        return array_merge($this->fillable, ['nombre_lesion', 'parte_del_cuerpo']);
-    }
+    protected $casts = [
+        'fecha' => 'date',
+    ];
 
-    public function registerMediaConversions(Media $media = null): void
-    {
-        // Conversiones deshabilitadas temporalmente para evitar errores de permisos en Windows
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'fecha' => 'date',
-        ];
-    }
-
-    protected static function booted(): void
-    {
-        static::deleted(function (Seguimiento $seguimiento) {
-            $lesion = $seguimiento->lesion;
-            if ($lesion && $lesion->seguimientos()->count() === 0) {
-                $lesion->delete();
-            }
-        });
-    }
-
-    public function lesion()
+    public function lesion(): BelongsTo
     {
         return $this->belongsTo(Lesion::class);
     }
 
-    public function profesional()
+    public function profesional(): BelongsTo
     {
         return $this->belongsTo(Profesional::class);
     }
 
-    public function imagenes()
+    public function imagenes(): HasMany
     {
         return $this->hasMany(ImagenSeguimiento::class);
     }
@@ -68,6 +49,11 @@ class Seguimiento extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('fotos_clinicas')
-            ->useDisk(env('MEDIA_DISK', 'public'));
+            ->useDisk(config('filesystems.default', 'public'));
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        // Conversiones deshabilitadas para evitar errores de permisos en Windows
     }
 }

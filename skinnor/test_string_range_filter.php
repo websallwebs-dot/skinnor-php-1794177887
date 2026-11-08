@@ -1,8 +1,10 @@
 <?php
+
 require 'vendor/autoload.php';
 $app = require_once 'bootstrap/app.php';
-$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+$app->make(Kernel::class)->bootstrap();
 
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Http;
 
 $apiKey = config('services.pinecone.api_key');
@@ -13,7 +15,7 @@ echo "Querying Pinecone for NV AND Age [30, 60] (as strings)...\n";
 
 $response = Http::withHeaders([
     'Api-Key' => $apiKey,
-    'Content-Type' => 'application/json'
+    'Content-Type' => 'application/json',
 ])->post("https://{$index}/query", [
     'vector' => $dummyVector,
     'topK' => 5,
@@ -22,15 +24,15 @@ $response = Http::withHeaders([
         'dx' => ['$eq' => 'nv'],
         // Maybe Pinecone treats these as strings and rejects range operators?
         // Let's check the API response for this specific query.
-        'age' => ['$gte' => '30.0', '$lte' => '60.0']
-    ]
+        'age' => ['$gte' => '30.0', '$lte' => '60.0'],
+    ],
 ]);
 
 if ($response->successful()) {
     echo "Success!\n";
     $data = $response->json();
-    echo "Matches found: " . count($data['matches']) . "\n";
+    echo 'Matches found: '.count($data['matches'])."\n";
 } else {
-    echo "Error: " . $response->status() . "\n";
-    echo $response->body() . "\n";
+    echo 'Error: '.$response->status()."\n";
+    echo $response->body()."\n";
 }

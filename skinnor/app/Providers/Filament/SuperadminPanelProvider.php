@@ -3,7 +3,6 @@
 namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages\Dashboard;
@@ -23,10 +22,12 @@ class SuperadminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // El superadmin usa rutas de login personalizadas en routes/web.php (sin tenancy).
+        // No se usa ->login() ni AuthenticateSession del middleware porque sus rutas
+        // (filament.superadmin.auth.*) no están registradas; el login se maneja en routes/web.php.
         return $panel
             ->id('superadmin')
             ->path('superadmin')
-            ->login()
             ->brandName('Skinnor — Superadmin')
             ->colors([
                 'primary' => Color::Amber,
@@ -45,7 +46,6 @@ class SuperadminPanelProvider extends PanelProvider
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
-                AuthenticateSession::class,
                 ShareErrorsFromSession::class,
                 PreventRequestForgery::class,
                 SubstituteBindings::class,

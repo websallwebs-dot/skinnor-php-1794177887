@@ -2,10 +2,11 @@
 
 namespace App\Filament\Admin\Resources\Pacientes;
 
-use App\Filament\Admin\Resources\Pacientes\Pages;
 use App\Models\Paciente;
 use App\Models\Profesional;
 use BackedEnum;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Resources\Resource;
@@ -18,6 +19,7 @@ use Filament\Tables\Table;
 class PacienteResource extends Resource
 {
     protected static ?string $model = Paciente::class;
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
 
     public static function getNavigationLabel(): string
@@ -56,7 +58,7 @@ class PacienteResource extends Resource
                         ->options(
                             Profesional::with('user')
                                 ->get()
-                                ->mapWithKeys(fn($p) => [$p->id => $p->user->name . ' — ' . $p->especialidad])
+                                ->mapWithKeys(fn ($p) => [$p->id => $p->user->name.' — '.$p->especialidad])
                         )
                         ->searchable()
                         ->nullable(),
@@ -68,8 +70,8 @@ class PacienteResource extends Resource
                         ->label(__('fields.genero'))
                         ->options([
                             'masculino' => 'Masculino',
-                            'femenino'  => 'Femenino',
-                            'otro'      => 'Otro',
+                            'femenino' => 'Femenino',
+                            'otro' => 'Otro',
                         ]),
                     Forms\Components\TextInput::make('telefono')
                         ->label(__('fields.telefono'))
@@ -130,17 +132,18 @@ class PacienteResource extends Resource
                     ->counts('lesiones'),
             ])
             ->actions([
-                \Filament\Actions\ViewAction::make()->label(__('actions.ver')),
-                \Filament\Actions\EditAction::make()->label(__('actions.editar')),
+                ViewAction::make()->label(__('actions.ver')),
+                EditAction::make()->label(__('actions.editar')),
             ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListPacientes::route('/'),
-            'view'   => Pages\ViewPaciente::route('/{record}'),
-            'edit'   => Pages\EditPaciente::route('/{record}/edit'),
+            'index' => Pages\ListPacientes::route('/'),
+            'create' => Pages\CreatePaciente::route('/create'),
+            'view' => Pages\ViewPaciente::route('/{record}'),
+            'edit' => Pages\EditPaciente::route('/{record}/edit'),
         ];
     }
 }

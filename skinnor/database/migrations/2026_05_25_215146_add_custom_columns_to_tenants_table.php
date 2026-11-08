@@ -12,19 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tenants', function (Blueprint $table) {
-            if (!Schema::hasColumn('tenants', 'nombre')) {
+            if (! Schema::hasColumn('tenants', 'nombre')) {
                 $table->string('nombre')->nullable();
             }
-            if (!Schema::hasColumn('tenants', 'plan')) {
+            if (! Schema::hasColumn('tenants', 'plan')) {
                 $table->string('plan')->default('free');
             }
-            if (!Schema::hasColumn('tenants', 'activa')) {
+            if (! Schema::hasColumn('tenants', 'activa')) {
                 $table->boolean('activa')->default(true);
             }
-            if (!Schema::hasColumn('tenants', 'pais')) {
+            if (! Schema::hasColumn('tenants', 'pais')) {
                 $table->string('pais')->nullable();
             }
-            if (!Schema::hasColumn('tenants', 'ciudad')) {
+            if (! Schema::hasColumn('tenants', 'ciudad')) {
                 $table->string('ciudad')->nullable();
             }
         });

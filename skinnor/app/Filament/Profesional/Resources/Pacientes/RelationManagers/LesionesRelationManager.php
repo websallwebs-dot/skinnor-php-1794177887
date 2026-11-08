@@ -2,6 +2,7 @@
 
 namespace App\Filament\Profesional\Resources\Pacientes\RelationManagers;
 
+use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables;
@@ -10,6 +11,7 @@ use Filament\Tables\Table;
 class LesionesRelationManager extends RelationManager
 {
     protected static string $relationship = 'lesiones';
+
     protected static ?string $title = 'tables.lesiones';
 
     public function form(Schema $form): Schema
@@ -40,7 +42,7 @@ class LesionesRelationManager extends RelationManager
             ])
             ->headerActions([])
             ->actions([
-                \Filament\Actions\ViewAction::make()->label(__('actions.ver')),
+                ViewAction::make()->label(__('actions.ver')),
             ]);
     }
 }

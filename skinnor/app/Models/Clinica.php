@@ -1,29 +1,31 @@
 <?php
+
 namespace App\Models;
 
-use Stancl\Tenancy\Database\Models\Tenant;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
+use Stancl\Tenancy\Database\Models\Tenant;
 
 class Clinica extends Tenant implements TenantWithDatabase
 {
-    use HasDatabase, HasDomains;
+    use HasFactory, HasDatabase, HasDomains;
 
     public static function getCustomColumns(): array
     {
         return [
-            'id', 
-            'nombre', 
-            'rut', 
-            'logo', 
-            'email', 
-            'telefono', 
-            'direccion', 
-            'pais', 
-            'ciudad', 
-            'plan', 
-            'activa'
+            'id',
+            'nombre',
+            'rut',
+            'logo',
+            'email',
+            'telefono',
+            'direccion',
+            'pais',
+            'ciudad',
+            'plan',
+            'activa',
         ];
     }
 

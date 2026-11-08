@@ -4,14 +4,21 @@ namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class User extends Authenticatable implements FilamentUser, HasMedia
 {
-    use Notifiable, InteractsWithMedia;
+    use HasFactory, InteractsWithMedia, Notifiable;
+
+    // Los usuarios residen en la DB central, no en el tenant
+    protected $connection = 'sqlite';
 
     protected $fillable = [
         'name',
@@ -33,29 +40,65 @@ class User extends Authenticatable implements FilamentUser, HasMedia
     {
         return [
             'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
+            'password' => 'hashed',
         ];
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return match($panel->getId()) {
-            'superadmin'   => $this->role === 'superadmin',
-            'admin'        => $this->role === 'admin',
-            'profesional'  => $this->role === 'profesional',
-            'paciente'     => $this->role === 'paciente',
-            default        => false,
+        return match ($panel->getId()) {
+            'superadmin' => $this->role === 'superadmin',
+            'admin' => $this->role === 'admin',
+            'profesional' => $this->role === 'profesional',
+            'paciente' => $this->role === 'paciente',
+            default => false,
         };
     }
 
-    public function profesional()
+    public function getProfesionalAttribute(): ?Profesional
     {
-        return $this->hasOne(Profesional::class);
+        return $this->resolveTenantScopedModelAttribute(Profesional::class, 'profesionales');
     }
 
-    public function paciente()
+    public function getPacienteAttribute(): ?Paciente
     {
-        return $this->hasOne(Paciente::class);
+        return $this->resolveTenantScopedModelAttribute(Paciente::class, 'pacientes');
+    }
+
+    protected function resolveTenantScopedModelAttribute(string $modelClass, string $table): ?Model
+    {
+        if (! $this->exists || ! $this->getKey()) {
+            return null;
+        }
+
+        $connections = array_values(array_unique(array_filter([
+            'tenant',
+            config('database.default'),
+            $this->getConnectionName(),
+        ])));
+
+        foreach ($connections as $connection) {
+            try {
+                if (! Schema::connection($connection)->hasTable($table)) {
+                    continue;
+                }
+
+                $record = DB::connection($connection)->table($table)->where('user_id', $this->getKey())->first();
+
+                if (! $record) {
+                    return null;
+                }
+
+                $model = new $modelClass;
+                $model->setConnection($connection);
+
+                return $model->newQuery()->find($record->id);
+            } catch (\Throwable) {
+                continue;
+            }
+        }
+
+        return null;
     }
 
     public function clinica()
@@ -66,6 +109,6 @@ class User extends Authenticatable implements FilamentUser, HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('foto')
-             ->singleFile();
+            ->singleFile();
     }
 }

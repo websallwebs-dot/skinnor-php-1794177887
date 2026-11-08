@@ -2,5 +2,5 @@
 
 return [
     'informacion_seguimiento' => 'Información del seguimiento',
-    'fotos_clinicas'         => 'Fotos clínicas',
+    'fotos_clinicas' => 'Fotos clínicas',
 ];

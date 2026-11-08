@@ -1,14 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Paciente extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use HasFactory, InteractsWithMedia;
+
     protected $table = 'pacientes';
 
     protected $fillable = [
@@ -26,22 +32,26 @@ class Paciente extends Model implements HasMedia
         'telefono_emergencia',
     ];
 
-    public function user()
+    protected $casts = [
+        'fecha_nacimiento' => 'date',
+    ];
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function profesional()
+    public function profesional(): BelongsTo
     {
         return $this->belongsTo(Profesional::class);
     }
 
-    public function lesiones()
+    public function lesiones(): HasMany
     {
         return $this->hasMany(Lesion::class);
     }
 
-    public function consultas()
+    public function consultas(): HasMany
     {
         return $this->hasMany(Consulta::class);
     }
@@ -49,6 +59,6 @@ class Paciente extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('foto')
-             ->singleFile();
+            ->singleFile();
     }
 }

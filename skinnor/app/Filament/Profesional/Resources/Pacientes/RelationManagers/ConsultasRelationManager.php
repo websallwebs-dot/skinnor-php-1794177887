@@ -2,6 +2,8 @@
 
 namespace App\Filament\Profesional\Resources\Pacientes\RelationManagers;
 
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
@@ -11,6 +13,7 @@ use Filament\Tables\Table;
 class ConsultasRelationManager extends RelationManager
 {
     protected static string $relationship = 'consultas';
+
     protected static ?string $title = 'nav.consultas';
 
     public function form(Schema $form): Schema
@@ -50,12 +53,13 @@ class ConsultasRelationManager extends RelationManager
             ])
             ->headerActions([])
             ->actions([
-                \Filament\Actions\ViewAction::make()->label(__('actions.ver')),
-                \Filament\Actions\EditAction::make()
+                ViewAction::make()->label(__('actions.ver')),
+                EditAction::make()
                     ->label(__('actions.responder'))
                     ->mutateFormDataUsing(function (array $data): array {
-                        $data['leida']         = true;
+                        $data['leida'] = true;
                         $data['respondida_at'] = now();
+
                         return $data;
                     }),
             ]);

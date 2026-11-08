@@ -3,6 +3,7 @@
 namespace App\Filament\Paciente\Resources\Consultas\Pages;
 
 use App\Filament\Paciente\Resources\Consultas\ConsultaResource;
+use App\Models\Paciente;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,9 +13,10 @@ class CreateConsulta extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $paciente = Auth::user()->paciente;
-        $data['paciente_id']    = $paciente->id;
-        $data['profesional_id'] = $paciente->profesional_id;
+        $paciente = Paciente::where('user_id', Auth::id())->first();
+        $data['paciente_id'] = $paciente?->id;
+        $data['profesional_id'] = $paciente?->profesional_id;
+
         return $data;
     }
 

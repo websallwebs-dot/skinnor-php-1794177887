@@ -1,16 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Providers;
 
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 use Stancl\JobPipeline\JobPipeline;
 use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Listeners;
 use Stancl\Tenancy\Middleware;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class TenancyServiceProvider extends ServiceProvider
 {
@@ -42,21 +47,21 @@ class TenancyServiceProvider extends ServiceProvider
         $this->bootEvents();
         $this->mapRoutes();
         $this->makeTenancyMiddlewareHighestPriority();
-        
+
         // Configurar Livewire para que funcione con tenencia según documentación oficial
         $this->configureLivewireForTenancy();
     }
- 
+
     protected function configureLivewireForTenancy(): void
     {
         // Configurar la ruta de update de Livewire con middleware de tenencia
-        if (class_exists(\Livewire\Livewire::class)) {
-            \Livewire\Livewire::setUpdateRoute(function ($handle) {
-                return \Illuminate\Support\Facades\Route::post('/livewire/update', $handle)
+        if (class_exists(Livewire::class)) {
+            Livewire::setUpdateRoute(function ($handle) {
+                return Route::post('/livewire/update', $handle)
                     ->middleware(
                         'web',
-                        \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,
-                        \Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains::class,
+                        InitializeTenancyByDomain::class,
+                        PreventAccessFromCentralDomains::class,
                     );
             });
         }
@@ -66,7 +71,7 @@ class TenancyServiceProvider extends ServiceProvider
     {
         foreach ($this->events() as $event => $listeners) {
             foreach ($listeners as $listener) {
-                if ($listener instanceof \Stancl\JobPipeline\JobPipeline) {
+                if ($listener instanceof JobPipeline) {
                     $listener = $listener->toListener();
                 }
                 Event::listen($event, $listener);
@@ -87,7 +92,7 @@ class TenancyServiceProvider extends ServiceProvider
     protected function makeTenancyMiddlewareHighestPriority(): void
     {
         $tenancyMiddleware = [
-            Middleware\PreventAccessFromCentralDomains::class,
+            PreventAccessFromCentralDomains::class,
             // InitializeTenancyByDomain está COMENTADO porque está aplicado en routes/web.php
             // Middleware\InitializeTenancyByDomain::class,
             Middleware\InitializeTenancyBySubdomain::class,
@@ -96,7 +101,7 @@ class TenancyServiceProvider extends ServiceProvider
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
+            $this->app[Kernel::class]->prependToMiddlewarePriority($middleware);
         }
     }
 }

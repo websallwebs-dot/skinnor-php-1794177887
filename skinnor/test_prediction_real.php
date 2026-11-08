@@ -1,8 +1,10 @@
 <?php
+
 require 'vendor/autoload.php';
 $app = require_once 'bootstrap/app.php';
-$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+$app->make(Kernel::class)->bootstrap();
 
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Http;
 
 // Ruta local de la imagen de prueba
@@ -12,7 +14,7 @@ $filename = 'ISIC_0029264.jpg';
 echo "Probando flujo de Predicción con IA (Clasificación BEiT)...\n";
 echo "Imagen: $filename\n";
 
-if (!file_exists($imagePath)) {
+if (! file_exists($imagePath)) {
     echo "Error: Imagen de prueba no encontrada en: $imagePath\n";
     exit;
 }
@@ -25,14 +27,14 @@ try {
         ->post('http://localhost:8003/predict');
 
     if ($response->failed()) {
-        echo "¡Error del servicio de IA (" . $response->status() . ")!\n";
-        echo "Cuerpo: " . $response->body() . "\n";
+        echo '¡Error del servicio de IA ('.$response->status().")!\n";
+        echo 'Cuerpo: '.$response->body()."\n";
     } else {
         echo "¡Predicción exitosa!\n";
         print_r($response->json());
     }
 
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo "¡ERROR CAPTURADO!\n";
-    echo "Mensaje: " . $e->getMessage() . "\n";
+    echo 'Mensaje: '.$e->getMessage()."\n";
 }

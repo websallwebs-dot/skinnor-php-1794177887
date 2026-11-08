@@ -2,9 +2,10 @@
 
 namespace App\Filament\Profesional\Resources\Consultas;
 
-use App\Filament\Profesional\Resources\Consultas\Pages;
 use App\Models\Consulta;
 use BackedEnum;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 class ConsultaResource extends Resource
 {
     protected static ?string $model = Consulta::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChatBubbleLeftRight;
 
     public static function getNavigationLabel(): string
@@ -37,6 +39,7 @@ class ConsultaResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $profesional = Auth::user()->profesional;
+
         return parent::getEloquentQuery()->where('profesional_id', $profesional?->id)->orderBy('created_at', 'desc');
     }
 
@@ -80,8 +83,8 @@ class ConsultaResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->actions([
-                \Filament\Actions\ViewAction::make(),
-                \Filament\Actions\EditAction::make()
+                ViewAction::make(),
+                EditAction::make()
                     ->label(__('fields.responder')),
             ]);
     }
@@ -95,8 +98,8 @@ class ConsultaResource extends Resource
     {
         return [
             'index' => Pages\ListConsultas::route('/'),
-            'view'  => Pages\ViewConsulta::route('/{record}'),
-            'edit'  => Pages\EditConsulta::route('/{record}/edit'),
+            'view' => Pages\ViewConsulta::route('/{record}'),
+            'edit' => Pages\EditConsulta::route('/{record}/edit'),
         ];
     }
 }

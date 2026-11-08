@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Paciente\Resources\Seguimientos\Pages;
 
 use App\Filament\Paciente\Resources\Seguimientos\SeguimientoResource;
@@ -33,7 +34,7 @@ class ViewSeguimiento extends ViewRecord
                     TextEntry::make('nota')->label(__('tables.nota'))
                         ->placeholder(__('messages.sin_nota'))->columnSpanFull(),
                     TextEntry::make('subido_por')->label(__('tables.subido_por'))
-                        ->formatStateUsing(fn(?string $state) => SeguimientoFotos::formatSubidoPor($state))
+                        ->formatStateUsing(fn (?string $state) => SeguimientoFotos::formatSubidoPor($state))
                         ->badge(),
                     TextEntry::make('created_at')->label(__('tables.registro_sistema'))
                         ->dateTime('d/m/Y H:i'),
@@ -45,7 +46,7 @@ class ViewSeguimiento extends ViewRecord
                     ViewEntry::make('fotos_grid')
                         ->label('')
                         ->view('filament.seguimientos.fotos-grid')
-                        ->viewData(fn() => ['seguimientoId' => $this->record->getKey()]),
+                        ->viewData(fn () => ['seguimientoId' => $this->record->getKey()]),
                 ])
                 ->columnSpanFull(),
 
@@ -54,7 +55,7 @@ class ViewSeguimiento extends ViewRecord
                     ViewEntry::make('historial_fotos')
                         ->label('')
                         ->view('filament.paciente.lesion-historial')
-                        ->viewData(fn() => [
+                        ->viewData(fn () => [
                             'seguimientos' => $this->record
                                 ->lesion
                                 ->seguimientos()
@@ -64,14 +65,14 @@ class ViewSeguimiento extends ViewRecord
                                 ->get()
                                 ->map(function ($seg) {
                                     return [
-                                        'id'          => $seg->id,
-                                        'fecha'       => optional($seg->fecha)->format('d/m/Y') ?? '—',
-                                        'hora'        => $seg->hora ? Carbon::parse($seg->hora)->format('H:i') : '—',
-                                        'nota'        => $seg->nota,
-                                        'subido_por'  => $seg->subido_por,
+                                        'id' => $seg->id,
+                                        'fecha' => optional($seg->fecha)->format('d/m/Y') ?? '—',
+                                        'hora' => $seg->hora ? Carbon::parse($seg->hora)->format('H:i') : '—',
+                                        'nota' => $seg->nota,
+                                        'subido_por' => $seg->subido_por,
                                         'total_fotos' => $seg->getMedia('fotos_clinicas')->count(),
-                                        'registrado'  => $seg->created_at?->format('d/m/Y H:i'),
-                                        'view_url'    => SeguimientoResource::getUrl('view', ['record' => $seg->id]),
+                                        'registrado' => $seg->created_at?->format('d/m/Y H:i'),
+                                        'view_url' => SeguimientoResource::getUrl('view', ['record' => $seg->id]),
                                     ];
                                 })->toArray(),
                         ]),

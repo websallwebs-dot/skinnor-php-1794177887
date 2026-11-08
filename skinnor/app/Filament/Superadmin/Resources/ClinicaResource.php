@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Filament\Superadmin\Resources;
 
+use App\Filament\Superadmin\Resources\ClinicaResource\Pages\CreateClinica;
+use App\Filament\Superadmin\Resources\ClinicaResource\Pages\EditClinica;
+use App\Filament\Superadmin\Resources\ClinicaResource\Pages\ListClinicas;
+use App\Filament\Superadmin\Resources\ClinicaResource\RelationManagers\DomainsRelationManager;
 use App\Models\Clinica;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms;
@@ -62,8 +66,8 @@ class ClinicaResource extends Resource
                     Forms\Components\Select::make('plan')
                         ->label(__('fields.plan'))
                         ->options([
-                            'free'       => 'Free',
-                            'pro'        => 'Pro',
+                            'free' => 'Free',
+                            'pro' => 'Pro',
                             'enterprise' => 'Enterprise',
                         ])
                         ->required(),
@@ -94,11 +98,11 @@ class ClinicaResource extends Resource
                 Tables\Columns\TextColumn::make('plan')
                     ->label(__('fields.plan'))
                     ->badge()
-                    ->color(fn(string $state) => match($state) {
-                        'free'       => 'gray',
-                        'pro'        => 'info',
+                    ->color(fn (string $state) => match ($state) {
+                        'free' => 'gray',
+                        'pro' => 'info',
                         'enterprise' => 'warning',
-                        default      => 'gray',
+                        default => 'gray',
                     }),
                 Tables\Columns\IconColumn::make('activa')
                     ->label(__('fields.activa'))
@@ -121,16 +125,16 @@ class ClinicaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            \App\Filament\Superadmin\Resources\ClinicaResource\RelationManagers\DomainsRelationManager::class,
+            DomainsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index'  => \App\Filament\Superadmin\Resources\ClinicaResource\Pages\ListClinicas::route('/'),
-            'create' => \App\Filament\Superadmin\Resources\ClinicaResource\Pages\CreateClinica::route('/create'),
-            'edit'   => \App\Filament\Superadmin\Resources\ClinicaResource\Pages\EditClinica::route('/{record}/edit'),
+            'index' => ListClinicas::route('/'),
+            'create' => CreateClinica::route('/create'),
+            'edit' => EditClinica::route('/{record}/edit'),
         ];
     }
 }

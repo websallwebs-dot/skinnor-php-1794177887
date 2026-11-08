@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LocalImageController;
+use App\Http\Middleware\EnsureSuperadmin;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -17,7 +19,7 @@ Route::get('/superadmin/login', [LoginController::class, 'showSuperadmin'])->nam
 Route::post('/superadmin/login', [LoginController::class, 'loginSuperadmin']);
 
 // Domain management (solo para superadmin autenticado)
-Route::middleware(['auth', \App\Http\Middleware\EnsureSuperadmin::class])->prefix('domains')->group(function () {
+Route::middleware(['auth', EnsureSuperadmin::class])->prefix('domains')->group(function () {
     Route::get('/', [LandingController::class, 'manageDomains'])->name('domains.index');
     Route::post('/', [LandingController::class, 'storeDomain'])->name('domains.store');
     Route::delete('/{domain}', [LandingController::class, 'deleteDomain'])->name('domains.delete');
@@ -27,19 +29,16 @@ Route::middleware(['auth', \App\Http\Middleware\EnsureSuperadmin::class])->prefi
 // TENANT ROUTES (clinica1.skinnor.local, etc)
 // ========================================
 
-// Login y Registro por Tenant - CON middleware de tenancy
-Route::middleware([
-    \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,
-])->group(function () {
-    Route::get('/login', [LoginController::class, 'show'])->name('login');
-    Route::post('/login', [LoginController::class, 'login']);
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+// Login y Registro - SIN middleware de tenancy (autenticación contra DB central)
+// Los paneles de Filament ya aplican su propio middleware de tenencia tras el login
+Route::get('/login', [LoginController::class, 'show'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    // Registro (solo pacientes)
-    Route::get('/register', [RegisterController::class, 'show'])->name('register');
-    Route::post('/register', [RegisterController::class, 'register']);
-});
+// Registro (solo pacientes)
+Route::get('/register', [RegisterController::class, 'show'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
 
 // Local image serving
-Route::get('/local-image/{filename}', [App\Http\Controllers\LocalImageController::class, 'show'])
+Route::get('/local-image/{filename}', [LocalImageController::class, 'show'])
     ->name('local.image');

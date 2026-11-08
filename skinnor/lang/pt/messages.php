@@ -1,4 +1,5 @@
 <?php
+
 return [
     'perfil_actualizado' => 'Perfil atualizado com sucesso',
     'sin_fotos' => 'Sem fotos',

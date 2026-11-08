@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Consulta extends Model
 {
+    use HasFactory;
     protected $table = 'consultas';
 
     protected $fillable = [
@@ -17,20 +22,17 @@ class Consulta extends Model
         'respondida_at',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'leida'          => 'boolean',
-            'respondida_at'  => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'leida' => 'boolean',
+        'respondida_at' => 'datetime',
+    ];
 
-    public function paciente()
+    public function paciente(): BelongsTo
     {
         return $this->belongsTo(Paciente::class);
     }
 
-    public function profesional()
+    public function profesional(): BelongsTo
     {
         return $this->belongsTo(Profesional::class);
     }

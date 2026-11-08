@@ -1,0 +1,36 @@
+{
+  "title": "Dirección visual de Skinnor",
+  "question": "El mundo visual que unifica landing + logins. Elegí la dirección asignada, una alternativa fusionada, o re-roll. (Superadmin mantendrá su propia piel separada por seguridad, desde la misma familia tipográfica).",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "El Expediente Clínico",
+      "kicker": "LA ROLA",
+      "lineage": "Historia clínica + línea de tiempo de seguimiento dermoscópico",
+      "body": "El producto ES un registro que evoluciona: lesiones fotografiadas y comparadas a lo largo del tiempo. El mundo se construye con el lenguaje del expediente clínico y del timeline de seguimiento — tarjetas de paciente apiladas, tiras de fotos con fecha estampada, secciones con pestañas, cuadrículas de medición, ticks de verificación.\n\nFIRST VIEWPORT: la ficha abierta de una lesión — la foto con marco de dermatoscopio, la línea del tiempo de seguimientos (antes/después), y la lectura de IA como una ficha de diagnóstico adjunta. Login/registro = \"abrir el expediente\": una tarjeta de paciente que se completa.\n\nRIESGO: poderoso y específico, exige disciplina para no volverse denso; los logins deben quedarse serenos para no sobrecargar.",
+      "hero": "",
+      "board": ""
+    },
+    {
+      "id": "challenger-vu",
+      "label": "La Sala de Monitores",
+      "kicker": "DESAFIANTE · INSTRUMENTOS",
+      "lineage": "Instrumentos clínicos de medición (monitores, escalas, agujas)",
+      "body": "Fusión del tablero de medidores VU con la clínica: una fila de escalas de lectura del diagnóstico — ABCDE, índice de evolución, confianza de similitud de la IA — que se inclinan hacia el rojo cuando una lesión preocupa. El rojo es la única alarma permitida; el azul de marca gobierna el resto.\n\nFIRST VIEWPORT: la lectura clínica de una lesión como panel de instrumentos en blanco marfil con agujas; el login es \"revisar los instrumentos\" del centro.\n\nIDENTIFICACIÓN: fuerte (los doctores leen vitals a diario). CLARIDAD: alta en métricas, menor en el flujo de acceso. Es el alterno más diferenciado.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-vu-meter-bridge-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/signals-instruments-vu-meter-bridge.webp"
+    },
+    {
+      "id": "challenger-metro",
+      "label": "Tiles Clínicos",
+      "kicker": "DESAFIANTE · INTERFAZ",
+      "lineage": "Lenguaje Modern UI de tiles planos y tipografía gigante",
+      "body": "Fusión del canon Metro con la clínica moderna: tiles azules planos sobre blanco, titulares gigantes recortados al borde, paneles que giran para mostrar datos frescos (fotos de lesiones, citas, métricas). Chrome eliminado — el tipo ES la interfaz.\n\nFIRST VIEWPORT: un mosaico de paneles del paciente; el login es un tile que se abre.\n\nIDENTIFICACIÓN: media (estética de software genérica). CLARIDAD: alta (interfaz limpia). Es el alterno más seguro, cercano a la categoría.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-metro-typographic-tiles-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/digital-design-canon-metro-typographic-tiles.webp"
+    }
+  ],
+  "reroll": true,
+  "canon": true,
+  "steer": true
+}

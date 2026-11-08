@@ -10,7 +10,6 @@ use Filament\Schemas\Components\Section;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class SeguimientoFotos
@@ -103,8 +102,8 @@ class SeguimientoFotos
                 ->formatStateUsing(fn (?string $state): string => self::formatSubidoPor($state))
                 ->color(fn (?string $state): string => match ($state) {
                     'profesional' => 'success',
-                    'paciente'    => 'info',
-                    default       => 'gray',
+                    'paciente' => 'info',
+                    default => 'gray',
                 }),
         ];
     }
@@ -120,7 +119,7 @@ class SeguimientoFotos
     public static function formatRegistro(Seguimiento $record): string
     {
         $fecha = $record->fecha?->format('d/m/Y') ?? '—';
-        $hora  = $record->hora
+        $hora = $record->hora
             ? Carbon::parse($record->hora)->format('H:i')
             : '—';
 
@@ -141,9 +140,9 @@ class SeguimientoFotos
     public static function formatSubidoPor(?string $state): string
     {
         return match ($state) {
-            'paciente'    => __('fields.subido_por_paciente'),
+            'paciente' => __('fields.subido_por_paciente'),
             'profesional' => __('fields.subido_por_profesional'),
-            default       => $state ?? '—',
+            default => $state ?? '—',
         };
     }
 
@@ -152,21 +151,21 @@ class SeguimientoFotos
         $media = $record->getMedia('fotos_clinicas');
 
         if ($media->isEmpty()) {
-            return '<span style="font-size:12px;color:#9ca3af;">' . e(__('messages.sin_fotos')) . '</span>';
+            return '<span style="font-size:12px;color:#9ca3af;">'.e(__('messages.sin_fotos')).'</span>';
         }
 
         $html = '<div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;">';
 
         foreach ($media->take($max) as $item) {
             $disk = env('MEDIA_DISK', 'public');
-            $url = ($disk === 's3') 
+            $url = ($disk === 's3')
                 ? $item->getTemporaryUrl(now()->addMinutes(60))
                 : $item->getUrl();
-                
+
             $html .= sprintf(
                 '<a href="%s" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;">'
-                . '<img src="%s" alt="" style="width:%dpx;height:%dpx;border-radius:7px;object-fit:cover;border:1px solid #e5e7eb;display:block;" />'
-                . '</a>',
+                .'<img src="%s" alt="" style="width:%dpx;height:%dpx;border-radius:7px;object-fit:cover;border:1px solid #e5e7eb;display:block;" />'
+                .'</a>',
                 e($url),
                 e($url),
                 $size,
@@ -175,7 +174,7 @@ class SeguimientoFotos
         }
 
         if ($media->count() > $max) {
-            $html .= '<span style="font-size:11px;color:#6b7280;font-weight:500;">+' . ($media->count() - $max) . '</span>';
+            $html .= '<span style="font-size:11px;color:#6b7280;font-weight:500;">+'.($media->count() - $max).'</span>';
         }
 
         $html .= '</div>';

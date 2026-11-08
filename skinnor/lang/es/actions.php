@@ -1,4 +1,5 @@
 <?php
+
 return [
     'guardar' => 'Guardar',
     'editar' => 'Editar',

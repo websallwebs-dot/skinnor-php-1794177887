@@ -1,8 +1,10 @@
 <?php
+
 require 'vendor/autoload.php';
 $app = require_once 'bootstrap/app.php';
-$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+$app->make(Kernel::class)->bootstrap();
 
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Http;
 
 $apiKey = config('services.pinecone.api_key');
@@ -13,18 +15,18 @@ echo "Querying Pinecone directly via HTTP...\n";
 
 $response = Http::withHeaders([
     'Api-Key' => $apiKey,
-    'Content-Type' => 'application/json'
+    'Content-Type' => 'application/json',
 ])->post("https://{$index}/query", [
     'vector' => $dummyVector,
     'topK' => 1,
     'includeMetadata' => true,
-    'filter' => ['dx' => 'nv'] // Pinecone might not need $eq for simple equality
+    'filter' => ['dx' => 'nv'], // Pinecone might not need $eq for simple equality
 ]);
 
 if ($response->successful()) {
     echo "Success!\n";
     print_r($response->json());
 } else {
-    echo "Error: " . $response->status() . "\n";
-    echo $response->body() . "\n";
+    echo 'Error: '.$response->status()."\n";
+    echo $response->body()."\n";
 }

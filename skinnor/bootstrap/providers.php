@@ -1,10 +1,17 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\Filament\AdminPanelProvider;
+use App\Providers\Filament\PacientePanelProvider;
+use App\Providers\Filament\ProfesionalPanelProvider;
+use App\Providers\Filament\SuperadminPanelProvider;
+use App\Providers\TenancyServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\Filament\AdminPanelProvider::class,
-    App\Providers\Filament\PacientePanelProvider::class,
-    App\Providers\Filament\ProfesionalPanelProvider::class,
-    App\Providers\Filament\SuperadminPanelProvider::class,
-    App\Providers\TenancyServiceProvider::class,
+    AppServiceProvider::class,
+    AdminPanelProvider::class,
+    PacientePanelProvider::class,
+    ProfesionalPanelProvider::class,
+    SuperadminPanelProvider::class,
+    TenancyServiceProvider::class,
 ];

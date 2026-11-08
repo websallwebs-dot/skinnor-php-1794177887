@@ -1,4 +1,5 @@
 <?php
+
 return [
     'paciente' => 'Paciente',
     'consulta' => 'Consulta',

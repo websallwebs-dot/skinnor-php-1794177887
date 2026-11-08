@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Paciente\Resources\Consultas;
 
-use App\Filament\Paciente\Resources\Consultas\Pages;
+use App\Filament\Paciente\Resources\Consultas\Schemas\ConsultaForm;
+use App\Filament\Paciente\Resources\Consultas\Tables\ConsultasTable;
 use App\Models\Consulta;
+use App\Models\Paciente;
 use BackedEnum;
-use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 class ConsultaResource extends Resource
 {
     protected static ?string $model = Consulta::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChatBubbleLeft;
 
     public static function getNavigationLabel(): string
@@ -36,54 +39,16 @@ class ConsultaResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $paciente = Auth::user()->paciente;
-        return parent::getEloquentQuery()->where('paciente_id', $paciente?->id)->orderBy('created_at', 'desc');
+        $paciente = Paciente::where('user_id', Auth::id())->first();
+
+        return parent::getEloquentQuery()
+            ->where('paciente_id', $paciente?->id)
+            ->orderBy('created_at', 'desc');
     }
 
     public static function form(Schema $form): Schema
     {
-        return $form->components([
-            Forms\Components\Textarea::make('mensaje')
-                ->label(__('fields.tu_consulta'))
-                ->required()
-                ->rows(5)
-                ->placeholder('Escribe tu pregunta o consulta al profesional...'),
-
-            Forms\Components\Textarea::make('respuesta')
-                ->label(__('fields.respuesta_profesional'))
-                ->rows(5)
-                ->disabled()
-                ->placeholder('Aún sin respuesta'),
-        ]);
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('mensaje')
-                    ->label(__('tables.consulta'))
-                    ->limit(60)
-                    ->searchable(),
-
-                Tables\Columns\IconColumn::make('leida')
-                    ->label(__('tables.respondida'))
-                    ->boolean(),
-
-                Tables\Columns\TextColumn::make('respondida_at')
-                    ->label(__('tables.fecha_respuesta'))
-                    ->dateTime('d/m/Y H:i')
-                    ->placeholder('Sin respuesta'),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('tables.enviada'))
-                    ->date('d/m/Y')
-                    ->sortable(),
-            ])
-            ->defaultSort('created_at', 'desc')
-            ->actions([
-                \Filament\Actions\ViewAction::make(),
-            ]);
+        return ConsultaForm::configure($form);
     }
 
     public static function canEdit($record): bool
@@ -91,12 +56,17 @@ class ConsultaResource extends Resource
         return false;
     }
 
+    public static function table(Table $table): Table
+    {
+        return ConsultasTable::configure($table);
+    }
+
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListConsultas::route('/'),
+            'index' => Pages\ListConsultas::route('/'),
             'create' => Pages\CreateConsulta::route('/create'),
-            'view'   => Pages\ViewConsulta::route('/{record}'),
+            'view' => Pages\ViewConsulta::route('/{record}'),
         ];
     }
 }

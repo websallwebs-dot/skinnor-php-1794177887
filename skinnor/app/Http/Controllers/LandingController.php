@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Clinica;
-use App\Models\User;
-use Stancl\Tenancy\Database\Models\Domain;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Stancl\Tenancy\Database\Models\Domain;
 
 class LandingController extends Controller
 {
@@ -15,23 +13,21 @@ class LandingController extends Controller
      */
     public function index()
     {
-        $clinicas = [];
-        $dominios = [];
-
-        // Si el usuario está autenticado, mostrar sus clínicas
+        // Si el usuario está autenticado, redirigir a su panel correspondiente
         if (auth()->check()) {
             $user = auth()->user();
-            
-            // Si es superadmin, mostrar todas las clínicas
-            if ($user->role === 'superadmin') {
-                $clinicas = Clinica::where('activa', true)->get();
-            } else if ($user->role === 'admin') {
-                // Si es admin, mostrar solo su clínica
-                $clinicas = Clinica::whereHas('users', fn($q) => $q->where('user_id', $user->id))
-                    ->where('activa', true)
-                    ->get();
-            }
+
+            return match ($user->role) {
+                'superadmin' => redirect('/superadmin'),
+                'admin' => redirect('/admin'),
+                'profesional' => redirect('/profesional'),
+                'paciente' => redirect('/paciente'),
+                default => redirect('/'),
+            };
         }
+
+        $clinicas = [];
+        $dominios = [];
 
         // Obtener dominios disponibles
         $dominios = Domain::with('tenant')->get();
@@ -77,7 +73,7 @@ class LandingController extends Controller
 
         try {
             Domain::create($validated);
-            
+
             return back()->with('success', "✅ Dominio '{$validated['domain']}' creado exitosamente");
         } catch (\Exception $e) {
             return back()->with('error', "❌ Error al crear dominio: {$e->getMessage()}")->withInput();

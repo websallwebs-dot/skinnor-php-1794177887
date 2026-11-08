@@ -9,13 +9,12 @@ class AbcdeAnalyzer
     /**
      * Analiza una imagen usando el script Python de OpenCV.
      *
-     * @param string $imagePath Ruta absoluta a la imagen en el sistema de archivos local.
-     * @return array
+     * @param  string  $imagePath  Ruta absoluta a la imagen en el sistema de archivos local.
      */
     public function analyze(string $imagePath): array
     {
         $scriptPath = base_path('scripts/abcde_analyzer.py');
-        $command = "python " . escapeshellarg($scriptPath) . " " . escapeshellarg($imagePath);
+        $command = 'python '.escapeshellarg($scriptPath).' '.escapeshellarg($imagePath);
 
         $output = [];
         $returnVar = 0;
@@ -24,11 +23,11 @@ class AbcdeAnalyzer
 
         $result = json_decode(implode('', $output), true);
 
-        if ($returnVar !== 0 || !$result) {
-            Log::error("Error ejecutando abcde_analyzer.py", [
+        if ($returnVar !== 0 || ! $result) {
+            Log::error('Error ejecutando abcde_analyzer.py', [
                 'command' => $command,
                 'output' => $output,
-                'returnVar' => $returnVar
+                'returnVar' => $returnVar,
             ]);
 
             return [

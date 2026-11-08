@@ -10,7 +10,7 @@ class EnsureSuperadmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->role !== 'superadmin') {
+        if (! auth()->check() || auth()->user()->role !== 'superadmin') {
             abort(403, 'No autorizado. Solo superadmin puede acceder.');
         }
 

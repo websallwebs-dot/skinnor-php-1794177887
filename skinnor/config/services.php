@@ -26,7 +26,7 @@ return [
 
     'pinecone' => [
         'api_key' => env('PINECONE_API_KEY'),
-        'index'   => env('PINECONE_INDEX_HOST'),
+        'index' => env('PINECONE_INDEX_HOST'),
     ],
 
     'dermfoundation' => [

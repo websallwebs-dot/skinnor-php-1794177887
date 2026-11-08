@@ -2,9 +2,10 @@
 
 namespace App\Filament\Admin\Resources\Profesionales;
 
-use App\Filament\Admin\Resources\Profesionales\Pages;
 use App\Models\Profesional;
 use BackedEnum;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Resources\Resource;
@@ -17,7 +18,9 @@ use Filament\Tables\Table;
 class ProfesionalResource extends Resource
 {
     protected static ?string $model = Profesional::class;
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-circle';
+
     protected static ?string $slug = 'profesionales';
 
     public static function getNavigationLabel(): string
@@ -103,17 +106,18 @@ class ProfesionalResource extends Resource
                     ->counts('pacientes'),
             ])
             ->actions([
-                \Filament\Actions\ViewAction::make()->label(__('actions.ver')),
-                \Filament\Actions\EditAction::make()->label(__('actions.editar')),
+                ViewAction::make()->label(__('actions.ver')),
+                EditAction::make()->label(__('actions.editar')),
             ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListProfesionales::route('/'),
-            'view'   => Pages\ViewProfesional::route('/{record}'),
-            'edit'   => Pages\EditProfesional::route('/{record}/edit'),
+            'index' => Pages\ListProfesionales::route('/'),
+            'create' => Pages\CreateProfesional::route('/create'),
+            'view' => Pages\ViewProfesional::route('/{record}'),
+            'edit' => Pages\EditProfesional::route('/{record}/edit'),
         ];
     }
 }

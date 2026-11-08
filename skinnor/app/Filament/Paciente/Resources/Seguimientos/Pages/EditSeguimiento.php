@@ -20,7 +20,7 @@ class EditSeguimiento extends EditRecord
     protected function mutateFormDataBeforeFill(array $data): array
     {
         $lesion = $this->record->lesion;
-        $data['nombre_lesion']    = $lesion?->nombre;
+        $data['nombre_lesion'] = $lesion?->nombre;
         $data['parte_del_cuerpo'] = $lesion?->parte_del_cuerpo;
 
         return $data;

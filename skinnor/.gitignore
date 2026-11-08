@@ -29,6 +29,7 @@ venv/
 __pycache__/
 *.pyc
 _ide_helper.php
+/lang/vendor/filament/
 Homestead.json
 Homestead.yaml
 Thumbs.db

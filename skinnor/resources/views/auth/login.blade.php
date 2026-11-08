@@ -38,8 +38,11 @@
 <body class="bg-gray-50 font-sans antialiased text-gray-950 h-full flex items-center justify-center p-6">
     <div class="max-w-md w-full">
         <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center bg-primary-600 p-3 rounded-xl shadow-lg shadow-primary-200 mb-4">
+                <i class="fas fa-hospital text-white text-xl"></i>
+            </div>
             <h1 class="text-3xl font-bold tracking-tight text-gray-900">Skinnor</h1>
-            <p class="text-sm font-medium text-gray-500 mt-2">Acceso a Clínica</p>
+            <p class="text-sm font-medium text-gray-500 mt-2">Acceso a tu clínica</p>
         </div>
 
         <div class="rounded-2xl bg-white shadow-xl ring-1 ring-gray-950/5 p-8 sm:p-10">
@@ -73,7 +76,7 @@
 
             <p class="mt-8 text-center text-sm text-gray-500">
                 ¿No tienes cuenta?
-                <a href="/register" class="font-semibold text-primary-600 hover:text-primary-500">Regístrate como paciente</a>
+                <a href="/register" class="font-semibold text-primary-600 hover:text-primary-500">Crear cuenta</a>
             </p>
         </div>
     </div>

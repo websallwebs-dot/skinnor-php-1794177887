@@ -2,17 +2,15 @@
 
 namespace App\Filament\Admin\Resources\Users;
 
-use App\Filament\Admin\Resources\Users\Pages;
 use App\Models\User;
 use BackedEnum;
-use Filament\Forms;
-use Filament\Schemas\Schema;
-use Filament\Resources\Resource;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables;
-use Filament\Actions\ViewAction;
-use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
 
     public static function getNavigationLabel(): string
@@ -54,17 +53,17 @@ class UserResource extends Resource
                 ->label(__('fields.rol'))
                 ->required()
                 ->options([
-                    'admin'        => 'Administrador',
-                    'profesional'  => 'Profesional',
-                    'paciente'     => 'Paciente',
+                    'admin' => 'Administrador',
+                    'profesional' => 'Profesional',
+                    'paciente' => 'Paciente',
                 ]),
 
             Forms\Components\TextInput::make('password')
                 ->label(__('fields.contrasena'))
                 ->password()
-                ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                ->dehydrated(fn($state) => filled($state))
-                ->required(fn(string $operation) => $operation === 'create'),
+                ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                ->dehydrated(fn ($state) => filled($state))
+                ->required(fn (string $operation) => $operation === 'create'),
         ]);
     }
 
@@ -84,12 +83,12 @@ class UserResource extends Resource
                 TextColumn::make('role')
                     ->label(__('fields.rol'))
                     ->badge()
-                    ->color(fn(string $state) => match($state) {
-                        'superadmin'  => 'warning',
-                        'admin'       => 'danger',
+                    ->color(fn (string $state) => match ($state) {
+                        'superadmin' => 'warning',
+                        'admin' => 'danger',
                         'profesional' => 'info',
-                        'paciente'    => 'success',
-                        default       => 'gray',
+                        'paciente' => 'success',
+                        default => 'gray',
                     }),
 
                 TextColumn::make('created_at')
@@ -108,10 +107,10 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListUsers::route('/'),
+            'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
-            'view'   => Pages\ViewUser::route('/{record}'),
-            'edit'   => Pages\EditUser::route('/{record}/edit'),
+            'view' => Pages\ViewUser::route('/{record}'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

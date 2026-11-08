@@ -12,9 +12,10 @@ class ExcludeLivewireFromTenancy
     {
         // Excluir rutas de Livewire del middleware de tenancy
         $path = $request->path();
-        
+
         if (str_contains($path, 'livewire')) {
             Log::info('Excluyendo ruta de Livewire del middleware de tenancy', ['path' => $path]);
+
             return $next($request);
         }
 

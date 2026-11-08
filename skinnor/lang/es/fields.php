@@ -1,4 +1,5 @@
 <?php
+
 return [
     'nombre' => 'Nombre',
     'email' => 'Correo electrónico',

@@ -20,7 +20,7 @@ class EmbeddingClient
         ]);
 
         if ($response->failed()) {
-            throw new \Exception('Error al obtener embeddings de IA: ' . $response->body());
+            throw new \Exception('Error al obtener embeddings de IA: '.$response->body());
         }
 
         return $response->json()['embedding'];

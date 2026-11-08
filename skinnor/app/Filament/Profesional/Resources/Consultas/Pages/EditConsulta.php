@@ -11,8 +11,9 @@ class EditConsulta extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['leida']          = true;
-        $data['respondida_at']  = now();
+        $data['leida'] = true;
+        $data['respondida_at'] = now();
+
         return $data;
     }
 
