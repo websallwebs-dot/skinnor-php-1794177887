@@ -60,5 +60,7 @@ class Paciente extends Model implements HasMedia
     {
         $this->addMediaCollection('foto')
             ->singleFile();
+
+        $this->addMediaCollection('pacientes_imagenes');
     }
 }

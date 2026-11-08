@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Clinica;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ClinicaFactory extends Factory

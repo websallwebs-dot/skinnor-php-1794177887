@@ -2,15 +2,14 @@
 
 namespace Tests;
 
-use App\Models\Clinica;
+use App\Models\Consulta;
+use App\Models\Lesion;
 use App\Models\Paciente;
 use App\Models\Profesional;
-use App\Models\Lesion;
-use App\Models\Consulta;
 use App\Models\Seguimiento;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 
 abstract class TenantTestCase extends TestCase
 {

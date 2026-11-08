@@ -33,3 +33,21 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Base de datos local (SQLite) - NO subir a GitHub
+database/database.sqlite
+database/tenant_*.sqlite
+
+# Logs de la aplicación
+/storage/logs/*.log
+
+# Archivos de depuración temporales
+debug_*.php
+test_*.php
+
+# Directorio de pruebas y documentación temporal
+.rsc.json
+01-TOOLS/
+02-DOCS/
+PRODUCT.md
+.rsc/

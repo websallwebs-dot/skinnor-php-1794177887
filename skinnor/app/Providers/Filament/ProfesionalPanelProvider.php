@@ -3,11 +3,11 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Profesional\Pages\BuscarDataset;
+use App\Filament\Profesional\Pages\Dashboard;
 use App\Filament\Profesional\Pages\Laboratorio;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -33,7 +33,6 @@ class ProfesionalPanelProvider extends PanelProvider
                 'primary' => Color::Teal,
             ])
             ->discoverResources(in: app_path('Filament/Profesional/Resources'), for: 'App\Filament\Profesional\Resources')
-            ->discoverPages(in: app_path('Filament/Profesional/Pages'), for: 'App\Filament\Profesional\Pages')
             ->pages([
                 Dashboard::class,
                 Laboratorio::class,

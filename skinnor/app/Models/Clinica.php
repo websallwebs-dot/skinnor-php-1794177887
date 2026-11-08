@@ -10,7 +10,7 @@ use Stancl\Tenancy\Database\Models\Tenant;
 
 class Clinica extends Tenant implements TenantWithDatabase
 {
-    use HasFactory, HasDatabase, HasDomains;
+    use HasDatabase, HasDomains, HasFactory;
 
     public static function getCustomColumns(): array
     {

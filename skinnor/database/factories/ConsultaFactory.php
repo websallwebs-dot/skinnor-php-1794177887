@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Consulta;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ConsultaFactory extends Factory

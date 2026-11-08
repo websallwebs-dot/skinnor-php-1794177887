@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('profesionales', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('user_id')->index();
             $table->string('foto')->nullable();
             $table->text('bio')->nullable();
             $table->string('telefono')->nullable();

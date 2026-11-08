@@ -61,7 +61,6 @@ class TenancyServiceProvider extends ServiceProvider
                     ->middleware(
                         'web',
                         InitializeTenancyByDomain::class,
-                        PreventAccessFromCentralDomains::class,
                     );
             });
         }

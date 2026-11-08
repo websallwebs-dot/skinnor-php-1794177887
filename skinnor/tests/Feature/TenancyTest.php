@@ -3,8 +3,6 @@
 use App\Models\Clinica;
 use App\Models\User;
 
-
-
 it('puede crear una clínica con nombre y slug', function () {
     $clinica = Clinica::create([
         'slug' => 'clinica-prueba',

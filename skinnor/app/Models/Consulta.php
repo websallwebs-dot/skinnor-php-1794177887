@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Consulta extends Model
 {
     use HasFactory;
+
     protected $table = 'consultas';
 
     protected $fillable = [

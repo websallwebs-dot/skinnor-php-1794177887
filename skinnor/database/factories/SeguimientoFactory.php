@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Seguimiento;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SeguimientoFactory extends Factory

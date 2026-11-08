@@ -1,22 +1,29 @@
 <?php
+
 require 'vendor/autoload.php';
 $app = require_once 'bootstrap/app.php';
-$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+$app->make(Kernel::class)->bootstrap();
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Clinica;
+use App\Models\Consulta;
+use App\Models\Lesion;
+use App\Models\Paciente;
+use App\Models\Profesional;
+use App\Models\Seguimiento;
 use App\Models\User;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\DB;
 
 echo "=== Creando registros en base de datos del tenant ===\n\n";
 
 // Obtener el tenant activo
 $domain = DB::table('domains')->where('domain', '127.0.0.1')->first();
 $tenant = Clinica::find($domain->tenant_id);
-echo "Clínica: " . $tenant->nombre . " (ID: " . $tenant->id . ")\n\n";
+echo 'Clínica: '.$tenant->nombre.' (ID: '.$tenant->id.")\n\n";
 
 // 1. Crear usuario Paciente en la DB central
 echo "Creando usuarios en DB central...\n";
-$pacienteUser = \App\Models\User::updateOrCreate(
+$pacienteUser = User::updateOrCreate(
     ['email' => 'paciente@skinnor.cl'],
     [
         'name' => 'Paciente Test',
@@ -25,7 +32,7 @@ $pacienteUser = \App\Models\User::updateOrCreate(
         'tenant_id' => $tenant->id,
     ]
 );
-echo "  - Paciente: " . $pacienteUser->email . " (ID: " . $pacienteUser->id . ")\n";
+echo '  - Paciente: '.$pacienteUser->email.' (ID: '.$pacienteUser->id.")\n";
 
 $profesionalUser = User::updateOrCreate(
     ['email' => 'prof@skinnor.cl'],
@@ -36,7 +43,7 @@ $profesionalUser = User::updateOrCreate(
         'tenant_id' => $tenant->id,
     ]
 );
-echo "  - Profesional: " . $profesionalUser->email . " (ID: " . $profesionalUser->id . ")\n";
+echo '  - Profesional: '.$profesionalUser->email.' (ID: '.$profesionalUser->id.")\n";
 
 $adminUser = User::updateOrCreate(
     ['email' => 'admin@skinnor.cl'],
@@ -47,13 +54,13 @@ $adminUser = User::updateOrCreate(
         'tenant_id' => $tenant->id,
     ]
 );
-echo "  - Admin: " . $adminUser->email . " (ID: " . $adminUser->id . ")\n";
+echo '  - Admin: '.$adminUser->email.' (ID: '.$adminUser->id.")\n";
 
 // 2. Crear registros en tablas del tenant
-echo PHP_EOL . "Creando registros en tablas del tenant...\n";
+echo PHP_EOL."Creando registros en tablas del tenant...\n";
 
 // Paciente
-$paciente = \App\Models\Paciente::updateOrCreate(
+$paciente = Paciente::updateOrCreate(
     ['user_id' => $pacienteUser->id],
     [
         'profesional_id' => null,
@@ -63,23 +70,23 @@ $paciente = \App\Models\Paciente::updateOrCreate(
         'genero' => 'masculino',
     ]
 );
-echo "  - Paciente registro: ID " . $paciente->id . PHP_EOL;
+echo '  - Paciente registro: ID '.$paciente->id.PHP_EOL;
 
 // Profesional
-$profesional = \App\Models\Profesional::updateOrCreate(
+$profesional = Profesional::updateOrCreate(
     ['user_id' => $profesionalUser->id],
     [
         'especialidad' => 'Dermatología',
     ]
 );
-echo "  - Profesional registro: ID " . $profesional->id . PHP_EOL;
+echo '  - Profesional registro: ID '.$profesional->id.PHP_EOL;
 
 // Actualizar paciente con profesional_id
 $paciente->update(['profesional_id' => $profesional->id]);
 echo "  - Paciente vinculado a profesional\n";
 
 // Crear una lesión de ejemplo
-$lesion = \App\Models\Lesion::create([
+$lesion = Lesion::create([
     'paciente_id' => $paciente->id,
     'nombre' => 'Lunar en brazo',
     'parte_del_cuerpo' => 'brazo',
@@ -87,10 +94,10 @@ $lesion = \App\Models\Lesion::create([
     'fecha_inicio' => '2024-01-01',
     'estado' => 'activa',
 ]);
-echo "  - Lesión creada: ID " . $lesion->id . " - " . $lesion->nombre . PHP_EOL;
+echo '  - Lesión creada: ID '.$lesion->id.' - '.$lesion->nombre.PHP_EOL;
 
 // Crear un seguimiento de ejemplo
-$seguimiento = \App\Models\Seguimiento::create([
+$seguimiento = Seguimiento::create([
     'lesion_id' => $lesion->id,
     'profesional_id' => $profesional->id,
     'fecha' => '2024-01-15',
@@ -98,10 +105,10 @@ $seguimiento = \App\Models\Seguimiento::create([
     'nota' => 'Seguimiento inicial',
     'subido_por' => 'paciente',
 ]);
-echo "  - Seguimiento creado: ID " . $seguimiento->id . PHP_EOL;
+echo '  - Seguimiento creado: ID '.$seguimiento->id.PHP_EOL;
 
 // Crear una consulta de ejemplo
-$consulta = \App\Models\Consulta::create([
+$consulta = Consulta::create([
     'paciente_id' => $paciente->id,
     'profesional_id' => $profesional->id,
     'mensaje' => 'Consulta sobre lunar en brazo',
@@ -109,14 +116,14 @@ $consulta = \App\Models\Consulta::create([
     'leida' => false,
     'respondida_at' => null,
 ]);
-echo "  - Consulta creada: ID " . $consulta->id . PHP_EOL;
+echo '  - Consulta creada: ID '.$consulta->id.PHP_EOL;
 
-echo PHP_EOL . "✅ Todos los registros creados exitosamente!\n";
+echo PHP_EOL."✅ Todos los registros creados exitosamente!\n";
 
-echo PHP_EOL . "Resumen de registros en el tenant:\n";
-echo "  - Usuarios: " . DB::connection('tenant')->table('users')->count() . " (en central)\n";
-echo "  - Pacientes: " . DB::connection('tenant')->table('pacientes')->count() . "\n";
-echo "  - Profesionales: " . DB::connection('tenant')->table('profesionales')->count() . "\n";
-echo "  - Lesiones: " . DB::connection('tenant')->table('lesiones')->count() . "\n";
-echo "  - Consultas: " . DB::connection('tenant')->table('consultas')->count() . "\n";
-echo "  - Seguimientos: " . DB::connection('tenant')->table('seguimientos')->count() . "\n";
+echo PHP_EOL."Resumen de registros en el tenant:\n";
+echo '  - Usuarios: '.DB::connection('tenant')->table('users')->count()." (en central)\n";
+echo '  - Pacientes: '.DB::connection('tenant')->table('pacientes')->count()."\n";
+echo '  - Profesionales: '.DB::connection('tenant')->table('profesionales')->count()."\n";
+echo '  - Lesiones: '.DB::connection('tenant')->table('lesiones')->count()."\n";
+echo '  - Consultas: '.DB::connection('tenant')->table('consultas')->count()."\n";
+echo '  - Seguimientos: '.DB::connection('tenant')->table('seguimientos')->count()."\n";

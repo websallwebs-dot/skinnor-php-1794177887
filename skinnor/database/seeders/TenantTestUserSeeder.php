@@ -12,30 +12,34 @@ class TenantTestUserSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Crear el usuario Profesional
-        $userProf = User::create([
-            'name' => 'Profesional Test',
-            'email' => 'prof@skinnor.cl',
-            'password' => Hash::make('password'),
-            'role' => 'profesional',
-        ]);
+        // 1. Crear o recuperar el usuario Profesional
+        $userProf = User::firstOrCreate(
+            ['email' => 'prof@skinnor.cl'],
+            [
+                'name' => 'Profesional Test',
+                'password' => Hash::make('password'),
+                'role' => 'profesional',
+            ]
+        );
 
-        Profesional::create([
-            'user_id' => $userProf->id,
-            'especialidad' => 'Dermatología',
-        ]);
+        $profesional = Profesional::firstOrCreate(
+            ['user_id' => $userProf->id],
+            ['especialidad' => 'Dermatología']
+        );
 
-        // 2. Crear un usuario Paciente
-        $userPac = User::create([
-            'name' => 'Paciente Test',
-            'email' => 'paciente@skinnor.cl',
-            'password' => Hash::make('password'),
-            'role' => 'paciente',
-        ]);
+        // 2. Crear o recuperar un usuario Paciente
+        $userPac = User::firstOrCreate(
+            ['email' => 'paciente@skinnor.cl'],
+            [
+                'name' => 'Paciente Test',
+                'password' => Hash::make('password'),
+                'role' => 'paciente',
+            ]
+        );
 
-        Paciente::create([
-            'user_id' => $userPac->id,
-            'profesional_id' => 1, // Asumimos que el profesional creado es el id 1
-        ]);
+        Paciente::firstOrCreate(
+            ['user_id' => $userPac->id],
+            ['profesional_id' => $profesional->id]
+        );
     }
 }

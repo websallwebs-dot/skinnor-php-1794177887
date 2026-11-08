@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('pacientes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('user_id')->index();
             $table->foreignId('profesional_id')->nullable()->constrained('profesionales')->nullOnDelete();
             $table->string('foto')->nullable();
             $table->string('rut')->nullable();

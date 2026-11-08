@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Lesion extends Model
 {
     use HasFactory;
+
     protected $table = 'lesiones';
 
     protected $fillable = [
@@ -36,5 +37,15 @@ class Lesion extends Model
     public function seguimientos(): HasMany
     {
         return $this->hasMany(Seguimiento::class)->orderBy('fecha', 'desc')->orderBy('hora', 'desc');
+    }
+
+    public function evaluaciones(): HasMany
+    {
+        return $this->hasMany(EvaluacionLesion::class, 'lesion_id')->orderBy('fecha_evaluacion', 'desc');
+    }
+
+    public function ultimaEvaluacion(): ?EvaluacionLesion
+    {
+        return $this->evaluaciones()->first();
     }
 }

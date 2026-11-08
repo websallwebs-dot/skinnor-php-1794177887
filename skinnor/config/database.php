@@ -34,7 +34,7 @@ return [
 
         'tenant' => [
             'driver' => 'sqlite',
-            'database' => database_path('tenant_' . env('TENANT_ID', 'tenant') . '.sqlite'),
+            'database' => database_path('tenant_'.env('TENANT_ID', 'tenant').'.sqlite'),
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,

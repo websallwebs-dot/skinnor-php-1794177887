@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Lesion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LesionFactory extends Factory
@@ -12,7 +11,7 @@ class LesionFactory extends Factory
         return [
             'nombre' => fake()->words(3, true),
             'parte_del_cuerpo' => fake()->randomElement([
-                'cara', 'cuello', 'pecho', 'espalda', 'abdomen', 'brazo', 'pierna', 'otro'
+                'cara', 'cuello', 'pecho', 'espalda', 'abdomen', 'brazo', 'pierna', 'otro',
             ]),
             'descripcion' => fake()->sentence(),
             'fecha_inicio' => fake()->date(),
