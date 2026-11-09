@@ -157,4 +157,24 @@ class Dashboard extends Page
                 ];
             })->toArray();
     }
+
+    public function data(): array
+    {
+        return [
+            'totalPacientes' => $this->totalPacientes,
+            'lesionesActivas' => $this->lesionesActivas,
+            'lesionesPendientes' => $this->lesionesPendientes,
+            'diasMonitoreo' => $this->diasMonitoreo,
+            'consultasPendientes' => $this->consultasPendientes,
+            'seguimientosPendientes' => $this->seguimientosPendientes,
+            'totalEvaluaciones' => $this->totalEvaluaciones,
+            'promedioTDS' => $this->promedioTDS,
+            'lesionesRiesgoAlto' => $this->lesionesRiesgoAlto,
+            'lesionesRiesgoMedio' => $this->lesionesRiesgoMedio,
+            'lesionesRiesgoBajo' => $this->lesionesRiesgoBajo,
+            'lesionesRecientes' => $this->lesionesRecientes,
+            'pacientesAlertas' => $this->pacientesAlertas,
+            'distribucionRiesgo' => $this->distribucionRiesgo,
+        ];
+    }
 }

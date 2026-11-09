@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Profesional\Pages\BuscarDataset;
 use App\Filament\Profesional\Pages\Dashboard;
 use App\Filament\Profesional\Pages\Laboratorio;
+use App\Filament\Profesional\Pages\MetricasABCDE;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -36,6 +37,7 @@ class ProfesionalPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
                 Laboratorio::class,
+                MetricasABCDE::class,
                 BuscarDataset::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Profesional/Widgets'), for: 'App\Filament\Profesional\Widgets')
